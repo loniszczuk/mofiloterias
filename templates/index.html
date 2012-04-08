@@ -1,0 +1,35 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Resultado de la quiniela</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="seleccionar_sorteo" >
+    <form action="resultados" method="GET">
+      Fecha(año-mes-dia): <input type="text" name="date" value="{% now "Y-m-d" %}"/> <br/>
+      Sorteo: 
+      <select name="gambling_name">
+        {% for g in gamblings %}
+          <option value="{{ g.name }}">{{ g.display_name }}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <input type="submit" value="Ver resultado" />
+    </form>
+  </div>
+  <div id="seleccionar_extracto" >
+    <form action="extractos" method="GET">
+      Fecha(año-mes-dia): <input type="text" name="date" value="{% now "Y-m-d" %}"/> <br/>
+      Sorteo:
+      <select name="summary_name">
+        {% for s in summaries %}
+          <option value="{{ s.name }}">{{ s.name }}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <input type="submit" value="Ver extracto" />
+    </form>
+  </div>
+</body>
+</html>

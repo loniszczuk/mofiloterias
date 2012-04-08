@@ -1,0 +1,28 @@
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Resultado de la quiniela</title>
+</head>
+<body>
+	<div id="contenedor_resultado">
+		<table>
+			<colgroup>
+				<col style="width:26px">
+				<col style="width:54px">
+				<col style="width:26px">
+				<col style="width:54px">
+			</colgroup>
+			<caption id="nombre_sorteo"></caption>
+			<tbody id="resultados">
+				{% for row in result %}
+					<tr>
+						{% for d in row %}
+							<td>{{d}}</td>
+						{% endfor %}
+					</tr>
+        {% endfor %}
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

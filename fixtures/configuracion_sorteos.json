@@ -1,0 +1,203 @@
+[
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 1,
+    "fields": {
+      "gambling": 1,
+      "days_of_week": [0,1,2,3,4,5],
+      "time": "11:30:00",
+      "finish_time": "12:00:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 2,
+    "fields": {
+      "gambling": 2,
+      "days_of_week": [0,1,2,3,4,5],
+      "time": "11:30:00",
+      "finish_time": "12:00:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 3,
+    "fields": {
+      "gambling": 3,
+      "days_of_week": [0,1,2,3,4,5],
+      "time": "11:30:00",
+      "finish_time": "12:00:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 4,
+    "fields": {
+      "gambling": 4,
+      "days_of_week": [0,1,2,3,4],
+      "time": "14:00:00",
+      "finish_time": "14:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 5,
+    "fields": {
+      "gambling": 5,
+      "days_of_week": [0,1,2,3,4],
+      "time": "14:00:00",
+      "finish_time": "14:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 6,
+    "fields": {
+      "gambling": 6,
+      "days_of_week": [0,1,2,3,4],
+      "time": "14:00:00",
+      "finish_time": "14:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 7,
+    "fields": {
+      "gambling": 4,
+      "days_of_week": [5],
+      "time": "15:00:00",
+      "finish_time": "15:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 8,
+    "fields": {
+      "gambling": 5,
+      "days_of_week": [5],
+      "time": "15:00:00",
+      "finish_time": "15:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 9,
+    "fields": {
+      "gambling": 6,
+      "days_of_week": [5],
+      "time": "15:00:00",
+      "finish_time": "15:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 10,
+    "fields": {
+      "gambling": 7,
+      "days_of_week": [0,1,2,3,4],
+      "time": "17:30:00",
+      "finish_time": "18:00:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 11,
+    "fields": {
+      "gambling": 8,
+      "days_of_week": [0,1,2,3,4],
+      "time": "17:30:00",
+      "finish_time": "18:00:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 12,
+    "fields": {
+      "gambling": 9,
+      "days_of_week": [0,1,2,3,4],
+      "time": "17:30:00",
+      "finish_time": "18:00:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 13,
+    "fields": {
+      "gambling": 10,
+      "days_of_week": [0,1,2,3,4,5],
+      "time": "21:00:00",
+      "finish_time": "21:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 14,
+    "fields": {
+      "gambling": 11,
+      "days_of_week": [0,1,2,3,4,5],
+      "time": "21:00:00",
+      "finish_time": "21:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 15,
+    "fields": {
+      "gambling": 12,
+      "days_of_week": [0,1,2,3,4,5],
+      "time": "21:00:00",
+      "finish_time": "21:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 16,
+    "fields": {
+      "gambling": 13,
+      "days_of_week": [0,1,2,3,4],
+      "time": "21:00:00",
+      "finish_time": "21:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 17,
+    "fields": {
+      "gambling": 14,
+      "days_of_week": [0,1,2,3,4,5],
+      "time": "20:00:00",
+      "finish_time": "20:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 18,
+    "fields": {
+      "gambling": 15,
+      "days_of_week": [2],
+      "time": "21:00:00",
+      "finish_time": "21:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 19,
+    "fields": {
+      "gambling": 16,
+      "days_of_week": [4],
+      "time": "21:00:00",
+      "finish_time": "21:30:00"
+    }
+  },
+  {
+    "model": "mofiloterias.GamblingConfiguration",
+    "pk": 20,
+    "fields": {
+      "gambling": 17,
+      "days_of_week": [5],
+      "time": "21:00:00",
+      "finish_time": "21:30:00"
+    }
+  }
+]
+

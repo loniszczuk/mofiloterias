@@ -1,0 +1,62 @@
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Extractos de la quiniela</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+	<style type="text/css">
+	.celda_posicion {
+		width: 1.6cm;
+		display: inline-block;
+	}
+	.celda_resultado {
+		width: 3.5cm;
+		font-family: comic;
+
+	}
+	.tabla_resultado {
+		font-size: 36pt;
+		width: 20.6cm;
+		font-family: sans-serif;
+		border: 2px solid #000000;
+		margin-bottom: 0.5cm;
+	}
+
+	.nombre_sorteo {
+		text-align: left;
+	}
+	.celda {
+		border: 1px solid #333333;
+		width: 5.12cm;
+	}
+	.prim_fila .prim_col .celda_posicion {
+
+	}
+	.prim_fila .prim_col .celda_resultado {
+		font-weight: bold;
+	}
+
+	</style>
+</head>
+<body>
+	<div id="summary">
+		{% for gambling in gambling_results %}
+		<table class="tabla_resultado">
+			<tbody>
+				<tr><th class="nombre_sorteo" colspan="8">{{ gambling.display_name }}</th></tr>
+				{% for row in gambling.table_of_numbers %}
+					<tr {% if forloop.first %}class="prim_fila"{% endif %} >
+						{% for pos,num in row %}
+							<td class="celda {% if forloop.first %}prim_col{% endif %}">
+								<span class="celda_posicion">{{ pos }}</span>
+								<span class="celda_resultado">{{ num }}</span>
+							</td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endfor %}
+	</div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+[
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 1,
+    "fields": {
+      "name": "prim_nac",
+      "display_name": "Primera Nacional"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 2,
+    "fields": {
+      "name": "prim_prov",
+      "display_name": "Primera Provincia"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 3,
+    "fields": {
+      "name": "prim_stafe",
+      "display_name": "Primera Santa Fe"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 4,
+    "fields": {
+      "name": "mat_nac",
+      "display_name": "Matutina Nacional"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 5,
+    "fields": {
+      "name": "mat_prov",
+      "display_name": "Matutina Provincia"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 6,
+    "fields": {
+      "name": "mat_stafe",
+      "display_name": "Matutina Santa Fe"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 7,
+    "fields": {
+      "name": "vesp_nac",
+      "display_name": "Vespertina Nacional"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 8,
+    "fields": {
+      "name": "vesp_prov",
+      "display_name": "Vespertina Provincia"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 9,
+    "fields": {
+      "name": "vesp_stafe",
+      "display_name": "Verpertina Santa Fe"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 10,
+    "fields": {
+      "name": "noct_nac",
+      "display_name": "Nocturna Nacional"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 11,
+    "fields": {
+      "name": "noct_prov",
+      "display_name": "Nocturna Provincia"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 12,
+    "fields": {
+      "name": "noct_stafe",
+      "display_name": "Nocturna Santa Fe"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 13,
+    "fields": {
+      "name": "mat_mont",
+      "display_name": "Matutina Montevideo"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 14,
+    "fields": {
+      "name": "noct_mont",
+      "display_name": "Nocturna Montevideo"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 15,
+    "fields": {
+      "name": "noct_cord",
+      "display_name": "Nocturna Cordoba"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 16,
+    "fields": {
+      "name": "noct_sant",
+      "display_name": "Nocturna Santiago"
+    }
+  },
+  {
+    "model": "mofiloterias.Gambling",
+    "pk": 17,
+    "fields": {
+      "name": "noct_mend",
+      "display_name": "Nocturna Mendoza"
+    }
+  }
+]
