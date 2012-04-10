@@ -2,8 +2,71 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Extractos de la quiniela</title>
-	<link href="static/css/gambling_summary.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<style type="">
+	* {
+	  margin: 0px;
+	  padding: 0px;
+	  border: 0px;
+	  font-size: 100%;
+	  font: inherit;
+	  vertical-align: baseline;
+	}
+  #margin {
+    height: 2.8cm;
+  }
+  .summary {
+    width: 20.6cm;
+    font-family: sans-serif;
+    border: 2px solid #000000;
+    margin-bottom: 0.5cm;
+  }
+  .summary_title {
+    position: relative;
+    height: 1.4cm;
+  }
+  .summary_title .gambling_name {
+    font-weight: bold;
+    font-variant: small-caps;
+    font-size: 32pt;
+    float: left;
+    letter-spacing:3px;
+  }
+  .summary_title .gambling_date {
+    font-weight: normal;
+    font-size: 20pt;
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+  }
+  .summary_title .gambling_date span {
+    font-weight: 550;
+  }
+
+  .cell {
+    font-size: 26pt;
+    border: 1px solid #333333;
+    width: 5.12cm;
+    height: 1cm;
+  }
+  .cell .ordinal {
+    float: left;
+  }
+  .cell .number {
+    float: right;
+    font-family: monospace;
+    text-align: right;
+    padding-right: 0.7em;
+  }
+  .first_row .first_col .ordinal {
+
+  }
+  .first_row .first_col .number {
+    font-weight: bolder;
+    font-size: 28pt;
+  }
+
+	</style>
 </head>
 <body>
 	<div id="margin"></div>
