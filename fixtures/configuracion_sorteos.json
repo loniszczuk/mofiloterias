@@ -155,8 +155,8 @@
     "fields": {
       "gambling": 13,
       "days_of_week": [0,1,2,3,4],
-      "time": "21:00:00",
-      "finish_time": "21:30:00"
+      "time": "15:00:00",
+      "finish_time": "15:30:00"
     }
   },
   {
@@ -185,8 +185,8 @@
     "fields": {
       "gambling": 16,
       "days_of_week": [4],
-      "time": "21:00:00",
-      "finish_time": "21:30:00"
+      "time": "22:30:00",
+      "finish_time": "23:00:00"
     }
   },
   {
