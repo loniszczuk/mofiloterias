@@ -3,6 +3,7 @@
   <meta charset="UTF-8" />
   <title>Resultado de la quiniela</title>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/css/notifications.css" />
 </head>
 <body>
   <div id="seleccionar_sorteo" >
@@ -21,7 +22,7 @@
   <div id="seleccionar_extracto" >
     <form action="extractos" method="GET">
       Fecha(año-mes-dia): <input type="text" name="date" value="{% now "Y-m-d" %}"/> <br/>
-      Sorteo:
+      Extracto:
       <select name="summary_name">
         {% for s in summaries %}
           <option value="{{ s.name }}">{{ s.name }}</option>
@@ -31,5 +32,24 @@
       <input type="submit" value="Ver extracto" />
     </form>
   </div>
+  <div id="notifications"></div>
+
+  <script type="text/javascript">
+    function refreshEvents() {
+      $.get('/events', 
+        function(data) {
+          $("#notifications").empty();
+          $("#notifications").append("<ul></ul>");
+          
+          $(data).each(function(i, e){
+            $("#notifications ul").append("<li>" + e + "</li>");
+          });
+        },
+        "json"
+      );
+      setTimeout(refreshEvents, 30000);
+    }
+    setTimeout(refreshEvents, 1000);
+  </script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 from django.db import models
 import json
 
-
 class Gambling(models.Model):
   name = models.CharField(max_length=30, unique=True)
   display_name = models.CharField(max_length=100)

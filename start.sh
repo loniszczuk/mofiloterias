@@ -8,4 +8,4 @@ echo "######################## START API "`date`" ##########################" >>
 
 export PYTHONPATH=.:..
 
-nohup uwsgi -C -s /var/nginx/mofiloterias-uwsgi.sock -i -M -w wsgi -z 5 -p 10 -l 64 -L -R 10000 -b 8192 --no-orphans --pidfile pid 2>> $ERRORLOG >> $LOG &
+nohup uwsgi -C -s /var/nginx/mofiloterias-uwsgi.sock -i -M -w mofiloterias.wsgi -z 5 -p 10 -l 64 -L -R 10000 -b 8192 --no-orphans --pidfile pid 2>> $ERRORLOG >> $LOG &

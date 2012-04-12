@@ -1,6 +1,6 @@
 [
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 1,
     "fields": {
       "name": "primera",
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 2,
     "fields": {
       "name": "matutina",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 3,
     "fields": {
       "name": "matutina",
@@ -27,7 +27,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 4,
     "fields": {
       "name": "vespertina",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 5,
     "fields": {
       "name": "vespertina",
@@ -45,7 +45,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 6,
     "fields": {
       "name": "vespertina",
@@ -54,7 +54,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 7,
     "fields": {
       "name": "nocturna",
@@ -63,7 +63,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingSummary",
+    "model": "gamblings.GamblingSummary",
     "pk": 8,
     "fields": {
       "name": "nocturna_mendoza",

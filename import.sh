@@ -1,4 +1,4 @@
-export DJANGO_SETTINGS_MODULE=settings
-export PYTHONPATH=.:..
+export DJANGO_SETTINGS_MODULE=mofiloterias.settings
+export PYTHONPATH=.
 
-python import.py $* 
+python gamblings/import.py $* 

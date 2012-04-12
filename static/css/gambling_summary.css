@@ -1,31 +1,28 @@
-@import url("base.css");
 
-#margin {
-  height: 2.8cm;
+#top-margin {
+  height: 4cm;
 }
 .summary {
   width: 20.6cm;
   font-family: sans-serif;
   border: 2px solid #000000;
-  margin-bottom: 0.5cm;
+  margin-bottom: 0cm;
 }
 .summary_title {
   position: relative;
-  height: 1.4cm;
 }
 .summary_title .gambling_name {
   font-weight: bold;
   font-variant: small-caps;
   font-size: 32pt;
   float: left;
-  letter-spacing:3px;
+  letter-spacing: 3px;
+  margin-left: 0.3cm;
 }
 .summary_title .gambling_date {
   font-weight: normal;
   font-size: 20pt;
-  position: absolute;
-  bottom: 0px;
-  right: 5px;
+  float: right;
 }
 .summary_title .gambling_date span {
   font-weight: 550;
@@ -39,12 +36,12 @@
 }
 .cell .ordinal {
   float: left;
+  margin-left: 0.3cm;
 }
 .cell .number {
   float: right;
   font-family: monospace;
-  text-align: right;
-  padding-right: 0.7em;
+  padding-right: 0.5cm;
 }
 .first_row .first_col .ordinal {
 

@@ -1,6 +1,6 @@
 [
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 1,
     "fields": {
       "name": "prim_nac",
@@ -8,7 +8,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 2,
     "fields": {
       "name": "prim_prov",
@@ -16,7 +16,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 3,
     "fields": {
       "name": "prim_stafe",
@@ -24,7 +24,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 4,
     "fields": {
       "name": "mat_nac",
@@ -32,7 +32,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 5,
     "fields": {
       "name": "mat_prov",
@@ -40,7 +40,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 6,
     "fields": {
       "name": "mat_stafe",
@@ -48,7 +48,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 7,
     "fields": {
       "name": "vesp_nac",
@@ -56,7 +56,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 8,
     "fields": {
       "name": "vesp_prov",
@@ -64,7 +64,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 9,
     "fields": {
       "name": "vesp_stafe",
@@ -72,7 +72,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 10,
     "fields": {
       "name": "noct_nac",
@@ -80,7 +80,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 11,
     "fields": {
       "name": "noct_prov",
@@ -88,7 +88,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 12,
     "fields": {
       "name": "noct_stafe",
@@ -96,7 +96,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 13,
     "fields": {
       "name": "mat_mont",
@@ -104,7 +104,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 14,
     "fields": {
       "name": "noct_mont",
@@ -112,7 +112,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 15,
     "fields": {
       "name": "noct_cord",
@@ -120,7 +120,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 16,
     "fields": {
       "name": "noct_sant",
@@ -128,7 +128,7 @@
     }
   },
   {
-    "model": "mofiloterias.Gambling",
+    "model": "gamblings.Gambling",
     "pk": 17,
     "fields": {
       "name": "noct_mend",

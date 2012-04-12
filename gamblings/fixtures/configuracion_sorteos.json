@@ -1,6 +1,6 @@
 [
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 1,
     "fields": {
       "gambling": 1,
@@ -10,7 +10,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 2,
     "fields": {
       "gambling": 2,
@@ -20,7 +20,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 3,
     "fields": {
       "gambling": 3,
@@ -30,7 +30,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 4,
     "fields": {
       "gambling": 4,
@@ -40,7 +40,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 5,
     "fields": {
       "gambling": 5,
@@ -50,7 +50,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 6,
     "fields": {
       "gambling": 6,
@@ -60,7 +60,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 7,
     "fields": {
       "gambling": 4,
@@ -70,7 +70,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 8,
     "fields": {
       "gambling": 5,
@@ -80,7 +80,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 9,
     "fields": {
       "gambling": 6,
@@ -90,7 +90,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 10,
     "fields": {
       "gambling": 7,
@@ -100,7 +100,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 11,
     "fields": {
       "gambling": 8,
@@ -110,7 +110,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 12,
     "fields": {
       "gambling": 9,
@@ -120,7 +120,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 13,
     "fields": {
       "gambling": 10,
@@ -130,7 +130,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 14,
     "fields": {
       "gambling": 11,
@@ -140,7 +140,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 15,
     "fields": {
       "gambling": 12,
@@ -150,7 +150,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 16,
     "fields": {
       "gambling": 13,
@@ -160,7 +160,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 17,
     "fields": {
       "gambling": 14,
@@ -170,7 +170,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 18,
     "fields": {
       "gambling": 15,
@@ -180,7 +180,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 19,
     "fields": {
       "gambling": 16,
@@ -190,7 +190,7 @@
     }
   },
   {
-    "model": "mofiloterias.GamblingConfiguration",
+    "model": "gamblings.GamblingConfiguration",
     "pk": 20,
     "fields": {
       "gambling": 17,

@@ -1,5 +1,6 @@
 from optparse import OptionParser
-from mofiloterias.models import GamblingConfiguration, GamblingResult
+from gamblings.models import GamblingConfiguration, GamblingResult
+from mofiloterias.models import Event
 from datetime import date, tzinfo, datetime, timedelta, time
 import urllib, re
 
@@ -28,13 +29,6 @@ gambling_name_mapping = {
   'noct_mend':12,
 }
 
-class GMT3(tzinfo):
-  """docstring for myTimeZone"""
-  def utcoffset(self, dt):
-    return timedelta(hours=-3)
-  def dst(self, dt):
-    return timedelta(0)
-
 def daterange(start_date, end_date):
     for n in range((end_date - start_date).days):
         yield start_date + timedelta(n)
@@ -42,7 +36,7 @@ def daterange(start_date, end_date):
 def save_gambling_results_by_date(a_date):
 
   weekday = a_date.weekday()
-  now = datetime.now(GMT3())
+  now = datetime.now()
   timenow = time(now.hour, now.minute, now.second)
 
   configurations = GamblingConfiguration.objects.select_related().filter(
@@ -101,12 +95,17 @@ def save_from_notitimba(gambling, a_date):
     s.date = a_date
     s.result = numbers
     s.save()
+
+    e = Event()
+    e.description = "Se importo %s fecha %s" % (gambling.display_name, a_date)
+    e.save()
+
   else:
     print "No se encontraron resultados para", gambling.display_name, "fecha", a_date
 
 
 if __name__ == '__main__':
-  print "######################## IMPORT %s #########################" % datetime.now(GMT3()).isoformat(' ')
+  print "######################## IMPORT %s #########################" % datetime.now().isoformat(' ')
 
   usage = "usage: %prog [--from date --to date]"
   parser = OptionParser(usage=usage)

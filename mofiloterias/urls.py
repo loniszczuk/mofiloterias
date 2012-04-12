@@ -9,7 +9,9 @@ urlpatterns = patterns('',
   # url(r'^$', 'mofi.views.home', name='home'),
   # url(r'^mofi/', include('mofi.foo.urls')),
   url(r'^$', 'mofiloterias.views.index'),
-  url(r'^resultados$', 'mofiloterias.views.gambling_result'),
-  url(r'^extractos$', 'mofiloterias.views.extractos'),
-  url(r'^logs$', 'mofiloterias.views.logs'),
+  url(r'^events$', 'mofiloterias.views.events'),
+  
+  url(r'^resultados$', 'gamblings.views.gambling_result'),
+  url(r'^extractos$', 'gamblings.views.gambling_summaries'),
+  
 )
