@@ -1,25 +1,25 @@
 <html>
 <head>
-	<meta charset="UTF-8" />
-	<title>Extractos de la quiniela</title>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<style type="">
-	* {
-	  margin: 0px;
-	  padding: 0px;
-	  border: 0px;
-	  font-size: 100%;
-	  font: inherit;
-	  vertical-align: baseline;
-	}
-  #margin {
-    height: 2.8cm;
+  <meta charset="UTF-8" />
+  <title>Extractos de la quiniela</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <style type="">
+  * {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+  #top-margin {
+    height: 4cm;
   }
   .summary {
     width: 20.6cm;
     font-family: sans-serif;
     border: 2px solid #000000;
-    margin-bottom: 0.5cm;
+    margin-bottom: 0cm;
   }
   .summary_title {
     position: relative;
@@ -35,14 +35,11 @@
   .summary_title .gambling_date {
     font-weight: normal;
     font-size: 20pt;
-    position: absolute;
-    bottom: 0px;
-    right: 5px;
+    float: right;
   }
   .summary_title .gambling_date span {
     font-weight: 550;
   }
-
   .cell {
     font-size: 26pt;
     border: 1px solid #333333;
@@ -59,40 +56,39 @@
     padding-right: 0.7em;
   }
   .first_row .first_col .ordinal {
-
   }
   .first_row .first_col .number {
     font-weight: bolder;
     font-size: 28pt;
   }
 
-	</style>
+  </style>
 </head>
 <body>
-	<div id="margin"></div>
-	<div id="summaries">
-		{% for gambling in gambling_results %}
-		<table class="summary">
-			<tbody>
-				<tr>
-					<th class="summary_title" colspan="8">
-						<span class="gambling_name">{{ gambling.display_name }}</span>
-						<span class="gambling_date">fecha: <span>{{ gambling.date|date:"d/m" }}</span></span>
-					</th>
-				</tr>
-				{% for row in gambling.table_of_numbers %}
-					<tr {% if forloop.first %}class="first_row"{% endif %} >
-						{% for pos,num in row %}
-							<td class="cell {% if forloop.first %}first_col{% endif %}">
-								<span class="ordinal">{{ pos }}</span>
-								<span class="number">{{ num }}</span>
-							</td>
-						{% endfor %}
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-		{% endfor %}
-	</div>
+  <div id="top-margin"></div>
+  <div id="summaries">
+    {% for gambling in gambling_results %}
+    <table class="summary">
+      <tbody>
+        <tr>
+          <th class="summary_title" colspan="8">
+            <span class="gambling_name">{{ gambling.display_name }}</span>
+            <span class="gambling_date">fecha: <span>{{ gambling.date|date:"d/m" }}</span></span>
+          </th>
+        </tr>
+        {% for row in gambling.table_of_numbers %}
+          <tr {% if forloop.first %}class="first_row"{% endif %} >
+            {% for pos,num in row %}
+              <td class="cell {% if forloop.first %}first_col{% endif %}">
+                <span class="ordinal">{{ pos }}</span>
+                <span class="number">{{ num }}</span>
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+  </div>
 </body>
 </html>

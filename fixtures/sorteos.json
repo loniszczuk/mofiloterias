@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "prim_nac",
-      "display_name": "Primera Nacional"
+      "display_name": "Nacional Mañana"
     }
   },
   {
@@ -12,7 +12,7 @@
     "pk": 2,
     "fields": {
       "name": "prim_prov",
-      "display_name": "Primera Provincia"
+      "display_name": "Provincia Mañana"
     }
   },
   {
@@ -20,7 +20,7 @@
     "pk": 3,
     "fields": {
       "name": "prim_stafe",
-      "display_name": "Primera Santa Fe"
+      "display_name": "Santa Fé Mañana"
     }
   },
   {
@@ -28,7 +28,7 @@
     "pk": 4,
     "fields": {
       "name": "mat_nac",
-      "display_name": "Matutina Nacional"
+      "display_name": "Nacional Mediodía"
     }
   },
   {
@@ -36,7 +36,7 @@
     "pk": 5,
     "fields": {
       "name": "mat_prov",
-      "display_name": "Matutina Provincia"
+      "display_name": "Provincia Mediodía"
     }
   },
   {
@@ -44,7 +44,7 @@
     "pk": 6,
     "fields": {
       "name": "mat_stafe",
-      "display_name": "Matutina Santa Fe"
+      "display_name": "Santa Fé Mediodía"
     }
   },
   {
@@ -52,7 +52,7 @@
     "pk": 7,
     "fields": {
       "name": "vesp_nac",
-      "display_name": "Vespertina Nacional"
+      "display_name": "Nacional Tarde"
     }
   },
   {
@@ -60,7 +60,7 @@
     "pk": 8,
     "fields": {
       "name": "vesp_prov",
-      "display_name": "Vespertina Provincia"
+      "display_name": "Provincia Tarde"
     }
   },
   {
@@ -68,7 +68,7 @@
     "pk": 9,
     "fields": {
       "name": "vesp_stafe",
-      "display_name": "Verpertina Santa Fe"
+      "display_name": "Santa Fé Tarde"
     }
   },
   {
@@ -76,7 +76,7 @@
     "pk": 10,
     "fields": {
       "name": "noct_nac",
-      "display_name": "Nocturna Nacional"
+      "display_name": "Nacional Noche"
     }
   },
   {
@@ -84,7 +84,7 @@
     "pk": 11,
     "fields": {
       "name": "noct_prov",
-      "display_name": "Nocturna Provincia"
+      "display_name": "Provincia Noche"
     }
   },
   {
@@ -92,7 +92,7 @@
     "pk": 12,
     "fields": {
       "name": "noct_stafe",
-      "display_name": "Nocturna Santa Fe"
+      "display_name": "Santa Fé Noche"
     }
   },
   {
@@ -100,7 +100,7 @@
     "pk": 13,
     "fields": {
       "name": "mat_mont",
-      "display_name": "Matutina Montevideo"
+      "display_name": "Montevideo Mediodía"
     }
   },
   {
@@ -108,7 +108,7 @@
     "pk": 14,
     "fields": {
       "name": "noct_mont",
-      "display_name": "Nocturna Montevideo"
+      "display_name": "Montevideo Noche"
     }
   },
   {
@@ -116,7 +116,7 @@
     "pk": 15,
     "fields": {
       "name": "noct_cord",
-      "display_name": "Nocturna Cordoba"
+      "display_name": "Córdoba Noche"
     }
   },
   {
@@ -124,7 +124,7 @@
     "pk": 16,
     "fields": {
       "name": "noct_sant",
-      "display_name": "Nocturna Santiago"
+      "display_name": "Santiago Noche"
     }
   },
   {
@@ -132,7 +132,7 @@
     "pk": 17,
     "fields": {
       "name": "noct_mend",
-      "display_name": "Nocturna Mendoza"
+      "display_name": "Mendoza Noche"
     }
   }
 ]

@@ -2,7 +2,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from mofiloterias.models import Gambling, GamblingConfiguration, GamblingResult, GamblingSummary
-import urllib, re, json
+import urllib, re, json, subprocess, os
 from datetime import datetime
 
 
@@ -11,6 +11,14 @@ def index(request):
   glamblings = Gambling.objects.values('name', 'display_name')
   summaries = GamblingSummary.objects.distinct().values('name').order_by
   return render_to_response('index.html', {'gamblings': glamblings, 'summaries': summaries} )  
+
+
+def logs(request):
+  import_log_file = os.getcwd() + "/logs/import.log"
+  tail = subprocess.check_output(["tail", "-50", import_log_file])
+  tail = tail.replace('\n', '<br/>')
+  return HttpResponse(tail)
+
 
 def gambling_result(request):
 

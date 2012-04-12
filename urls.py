@@ -11,4 +11,5 @@ urlpatterns = patterns('',
   url(r'^$', 'mofiloterias.views.index'),
   url(r'^resultados$', 'mofiloterias.views.gambling_result'),
   url(r'^extractos$', 'mofiloterias.views.extractos'),
+  url(r'^logs$', 'mofiloterias.views.logs'),
 )
