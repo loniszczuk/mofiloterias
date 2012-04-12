@@ -68,7 +68,7 @@ def save_gambling_result(gambling, a_date):
 
 
 def save_from_notitimba(gambling, a_date):
-  print "Descargando el sorteo", gambling.display_name, "de la fecha", a_date, "desde Notitimba"
+  print "Descargando el sorteo", gambling.display_name.encode('utf-8'), "de la fecha", a_date, "desde Notitimba"
   
   url = "http://www.notitimba.com/quiniela/premios.php?fch=%s&lot=%s" % (a_date, gambling_name_mapping[gambling.name])
   f = urllib.urlopen(url)
@@ -88,7 +88,7 @@ def save_from_notitimba(gambling, a_date):
     for i in xrange(10):
       numbers.append(matches[i*2+1][1])
 
-    print "Resultado encontrado para",gambling.display_name,"fecha", a_date, ":", numbers
+    print "Resultado encontrado para",gambling.display_name.encode('utf-8'),"fecha", a_date, ":", numbers
 
     s = GamblingResult()
     s.gambling = gambling
@@ -101,7 +101,7 @@ def save_from_notitimba(gambling, a_date):
     e.save()
 
   else:
-    print "No se encontraron resultados para", gambling.display_name, "fecha", a_date
+    print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date
 
 
 if __name__ == '__main__':

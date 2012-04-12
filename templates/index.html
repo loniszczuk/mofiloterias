@@ -32,17 +32,17 @@
       <input type="submit" value="Ver extracto" />
     </form>
   </div>
-  <div id="notifications"></div>
+  <div id="notifications">Eventos:<div id="events"></div></div>
 
   <script type="text/javascript">
     function refreshEvents() {
       $.get('/events', 
         function(data) {
-          $("#notifications").empty();
-          $("#notifications").append("<ul></ul>");
+          $("#events").empty();
+          $("#events").append("<ul></ul>");
           
           $(data).each(function(i, e){
-            $("#notifications ul").append("<li>" + e + "</li>");
+            $("#events ul").append("<li>" + e + "</li>");
           });
         },
         "json"
