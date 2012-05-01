@@ -134,7 +134,6 @@ INSTALLED_APPS = (
   # 'django.contrib.admin',
   'mofiloterias',
   'gamblings',
-
 )
 
 # A sample logging configuration. The only tangible logging

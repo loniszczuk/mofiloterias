@@ -5,12 +5,12 @@ class Gambling(models.Model):
   name = models.CharField(max_length=30, unique=True)
   display_name = models.CharField(max_length=100)
 
-
 class GamblingResult(models.Model):
 
   gambling = models.ForeignKey('Gambling')
   date = models.DateField()
   result = models.CommaSeparatedIntegerField(max_length=200)
+  verified = models.BooleanField()
 
   def result_as_list(self):
     return json.loads(self.result.replace("'", '"'))
@@ -35,4 +35,9 @@ class GamblingSummary(models.Model):
   days_of_week = models.CommaSeparatedIntegerField(max_length=50)
   gamblings = models.ManyToManyField('Gambling')
 
-  
+class ImportEvent(models.Model):
+  source = models.CharField(max_length=100)
+  url = models.CharField(max_length=100)
+  date = models.DateField()
+  gambling = models.ForeignKey('Gambling')
+  result = models.CommaSeparatedIntegerField(max_length=200)

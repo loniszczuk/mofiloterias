@@ -1,0 +1,10 @@
+
+.resumen_cabezas {
+  vertical-align: top;
+  display: inline-block;
+}
+
+.formularios {
+  border: solid 1px #000000;
+  display: inline-block;
+}
