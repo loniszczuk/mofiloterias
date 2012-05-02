@@ -67,7 +67,7 @@ class NotitimbaSource:
       import_event.result = numbers
       import_event.save()
 
-      publish_event("Se importo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
+      publish_event('IMPORTACION', "sorteo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
 
     else:
       print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en Notitimba"
@@ -177,7 +177,7 @@ class LoteriasMundialesSource:
           import_event.result = numbers
           import_event.save()
 
-          publish_event("Se importo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
+          publish_event('IMPORTACION', "sorteo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
 
         else:
           print "Se encontro la tabla para", gambling.display_name.encode('utf-8'), "fecha", a_date, ", pero no los 20 numeros en LoteriasMundiales"

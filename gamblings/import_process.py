@@ -76,7 +76,7 @@ def verify_from_sources(gambling, a_date):
 
       if gambling_result.verified:
         # anuncio que se verifico el resultado del sorteo
-        publish_event("Se verifico el sorteo %s fecha %s" % (gambling.display_name, a_date))
+        publish_event('VERIFICACION', "Sorteo %s fecha %s" % (gambling.display_name, a_date))
 
 def merge_results(numbers):
   if len(numbers) == 1:
