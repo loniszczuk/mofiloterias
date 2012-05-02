@@ -13,7 +13,7 @@ class GamblingResult(models.Model):
   verified = models.BooleanField()
 
   def result_as_list(self):
-    return json.loads(self.result.replace("'", '"'))
+    return map(lambda x: x.encode('utf-8'), self.result.replace("'", '').replace(' ','')[1:-1].split(','))
 
 class GamblingConfiguration(models.Model):
 
@@ -41,3 +41,6 @@ class ImportEvent(models.Model):
   date = models.DateField()
   gambling = models.ForeignKey('Gambling')
   result = models.CommaSeparatedIntegerField(max_length=200)
+
+  def result_as_list(self):
+    return map(lambda x: x.encode('utf-8'), self.result.replace("'", '').replace(' ','')[1:-1].split(','))

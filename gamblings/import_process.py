@@ -1,9 +1,9 @@
 from optparse import OptionParser
-from gamblings.models import GamblingConfiguration, GamblingResult, ImportEvent
 from mofiloterias import publish_event
+from gamblings.models import GamblingConfiguration, GamblingResult, ImportEvent
 from datetime import date, datetime, time
 
-from imports.sources import *
+from gamblings.sources import *
 
 sources = [
   NotitimbaSource(),
@@ -39,15 +39,13 @@ def save_past_gambling_results_by_date(a_date):
   for c in configurations:
     import_from_sources(c.gambling, a_date)
 
-
-
 def import_from_sources(gambling, a_date):
   
   any_gambling_result = GamblingResult.objects.filter(gambling=gambling, date=a_date, verified=True)
 
   if not any_gambling_result:
-    for source in (s for s in sources if lambda x: x.accepts(gambling)):
-      already_imported = ImportEvent.objects.filter(gambling_name=gambling.name, date=a_date)
+    for source in [s for s in sources if lambda x: x.accepts(gambling)]:
+      already_imported = ImportEvent.objects.filter(source=source.name, gambling=gambling, date=a_date)
       if not already_imported:
         source.import_results(gambling, a_date)
     
@@ -62,23 +60,23 @@ def verify_from_sources(gambling, a_date):
     gambling_result = results[0]
   else:
     gambling_result = GamblingResult()
-    s.gambling = gambling
-    s.date = a_date
+    gambling_result.gambling = gambling
+    gambling_result.date = a_date
 
-  imported = ImportEvent.objects.filter(gambling_name=gambling.name, date=a_date)
+  imported = ImportEvent.objects.filter(gambling=gambling, date=a_date)
 
   if imported:
-    numbers = [i.result for i in imported]
+    numbers = [i.result_as_list() for i in imported]
 
-    (verified, merged) = merge_numbers(numbers)
+    (verified, merged) = merge_results(numbers)
     if merged:
-      s.result = merged
-      s.verified = verified
-      s.save()
+      gambling_result.result = merged
+      gambling_result.verified = verified
+      gambling_result.save()
 
-      if s.verified:
-        # anuncio evento de que se verifico el sorteo
-        publish_event("Se verifico el sorteo %s fecha %s" % (gambling.display_name, a_date))
+      if gambling_result.verified:
+        # anuncio que se verifico el resultado del sorteo
+        publish_event('VERIFICACION', "Sorteo %s fecha %s" % (gambling.display_name, a_date))
 
 def merge_results(numbers):
   if len(numbers) == 1:
@@ -89,22 +87,22 @@ def merge_results(numbers):
     for i in xrange(20):
       sum = 0.0
       for num in numbers:
-        sum += num[i]
+        sum += int(num[i])
 
       media = float(sum) / len(numbers)
 
-      if media == numbers[0][i]:
+      if media == int(numbers[0][i]):
         # si el promedio coincide con el primer resultado, entonces todos coinciden
-        result.append(int(media))
+        result.append(numbers[0][i])
       else:
         # si no busco el que mas se parece
         any_difference = True
         min_diff = 10000
         for num in numbers:
-          if min_diff > abs(media - num[i]):
-            min_diff = abs(media - num[i])
+          if min_diff > abs(media - int(num[i])):
+            min_diff = abs(media - int(num[i]))
             tmp_ret = num[i]
-        result.append(int(tmp_ret))
+        result.append(tmp_ret)
     return (not any_difference, result)
 
 

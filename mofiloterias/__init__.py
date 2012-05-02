@@ -10,7 +10,8 @@ def now():
 def today():
   return datetime.now(timezone(settings.TIME_ZONE)).date()
 
-def publish_event(description):
+def publish_event(title, description):
   e = Event()
+  e.title = title
   e.description = description
   e.save()
