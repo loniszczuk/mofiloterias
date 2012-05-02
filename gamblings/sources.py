@@ -1,6 +1,7 @@
+# coding: utf-8
 from gamblings.models import ImportEvent
 from datetime import datetime, timedelta
-from mofiloterias import now, today
+from mofiloterias import now, today, publish_event
 
 import urllib, re
 
@@ -62,11 +63,11 @@ class NotitimbaSource:
       import_event.source = self.name
       import_event.url = url
       import_event.date = a_date
-      import_event.gambling_name = gambling.name
+      import_event.gambling = gambling
       import_event.result = numbers
       import_event.save()
 
-      publish_event("Se importo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
+      publish_event('IMPORTACION', "sorteo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
 
     else:
       print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en Notitimba"
@@ -74,26 +75,39 @@ class NotitimbaSource:
 
 
 loteriasmundiales_gambling_name_mapping = {
-  'prim_prov': ('LP', 0, 'BUENOS AIRES'),
-  'prim_nac': ('LN', 0, 'NACIONAL'),
-  'prim_stafe': ('L15', 0, 'SANTA FE'),
-  'mat_prov': ('LP', 2, 'BUENOS AIRES'),
-  'mat_nac': ('LN', 2, 'NACIONAL'),
-  'mat_mont': ('L11', 0, 'URUGUAYA'),
-  'mat_stafe': ('L15', 3, 'SANTA FE'),
-  'vesp_prov': ('LP', 5, 'BUENOS AIRES'),
-  'vesp_nac': ('LN', 5, 'NACIONAL'),
-  'vesp_stafe': ('L15', 7, 'SANTA FE'),
-  'noct_prov': ('LP', 7, 'BUENOS AIRES'),
-  'noct_nac': ('LN', 7, 'NACIONAL'),
-  'noct_mont': ('L11', 1, 'URUGUAYA'),
-  'noct_stafe': ('L15', 10, 'SANTA FE'),
-  'noct_cord': ('L6', 9, 'CORDOBA'),
-  'noct_sant': ('L17', 4, 'SANTIAGO'),
-  'noct_mend': ('L9', 2, 'MENDOZA'),
+  'prim_prov': ('LN', 'BUENOS AIRES (11:30 hs.)'),
+  'prim_nac': ('LN', 'NACIONAL (11:30 hs.)'),
+  'prim_stafe': ('L15', 'SANTA FE (11:30 hs.)'),
+  'mat_prov': ('LN', 'BUENOS AIRES (14:00 hs.)'),
+  'mat_nac': ('LN', 'NACIONAL (14:00 hs.)'),
+  'mat_mont': ('LN', 'URUGUAYA (14:00 hs.)'),
+  'mat_stafe': ('L15', 'SANTA FE (14:00 hs.)'),
+  'vesp_prov': ('LN', 'BUENOS AIRES (17:30 hs.)'),
+  'vesp_nac': ('LN', 'NACIONAL (17:30 hs.)'),
+  'vesp_stafe': ('L15', 'SANTA FE (17:30 hs.)'),
+  'noct_prov': ('LN', 'BUENOS AIRES (21:00 hs.)'),
+  'noct_nac': ('LN', 'NACIONAL (21:00 hs.)'),
+  'noct_mont': ('L11', 'URUGUAYA (20:00 hs.)'),
+  'noct_stafe': ('L15', 'SANTA FE (21:00 hs.)'),
+  'noct_cord': ('L6', 'CORDOBA (21:10 hs.)'),
+  'noct_sant': ('L17', 'SANTIAGO (22:30 hs)'),
+  'noct_mend': ('L9', 'MENDOZA (21:00 hs.)'),
 }
 
-
+loteriasmundiales_month_mapping = {
+  1: 'enero',
+  2: 'febrero',
+  3: 'marzo',
+  4: 'abril',
+  5: 'mayo',
+  6: 'junio',
+  7: 'julio',
+  8: 'agosto',
+  9: 'septiembre',
+  10: 'octubre',
+  11: 'noviembre',
+  12: 'diciembre',
+}
 
 class LoteriasMundialesSource:
 
@@ -117,49 +131,60 @@ class LoteriasMundialesSource:
     f = urllib.urlopen(url, params)
     page = f.read()
 
+    regex_date = r"sTitulo.innerHTML='RESULTADOS DEL.*"
+
+    page_date = re.search(regex_date, page)
+    day = a_date.day if a_date.day > 9 else "0%s" % a_date.day
+    month = loteriasmundiales_month_mapping[a_date.month]
+    year = a_date.year
+
+    expected_date = "%s de %s de %s" % (day, month, year)
+
+
+    if not page_date or page_date.group(0).lower().find(expected_date) < 0:
+      print "No coinciden las fechas para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales."
+      return None
 
     regex_table = r"<table width=\"180\".*?</table>"
 
     all_results = re.findall(regex_table, page)
 
-    if len(all_results) > conf[1]:
+    for table_result in all_results:
+      if conf[1] in table_result:
 
-      table_result = all_results[conf[1]]
+        regex_numbers = r">(\d{3,5})<"
 
-      if not conf[2] in table_result:
-        print "Se encontro la tabla para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales, pero no coincidia el nombre"
+        matches = re.findall(regex_numbers, table_result)
 
-      regex_numbers = r">(\d{3,5})<"
+        if len(matches) == 20:
+          numbers = []
+          for i in xrange(10):
+            numbers.append(matches[i*2])
+          for i in xrange(10):
+            numbers.append(matches[i*2+1])
 
-      matches = re.findall(regex_numbers, table_result)
+          if 'mont' in gambling.name:
+            numbers = map(lambda n: n[-3:], numbers)
+          else:
+            numbers = map(lambda n: n[-4:], numbers)
 
-      if len(matches) == 20:
-        numbers = []
-        for i in xrange(10):
-          numbers.append(matches[i*2][1])
-        for i in xrange(10):
-          numbers.append(matches[i*2+1][1])
+          print "Resultado encontrado para",gambling.display_name.encode('utf-8'),"fecha", a_date, ":", numbers
+          import_event = ImportEvent()
+          import_event.source = self.name
+          import_event.url = 'Not available'
+          import_event.date = a_date
+          import_event.gambling = gambling
+          import_event.result = numbers
+          import_event.save()
 
-        if 'mont' in gambling.name:
-          numbers = map(lambda n: n[-3:], numbers)
+          publish_event('IMPORTACION', "sorteo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
+
         else:
-          numbers = map(lambda n: n[-4:], numbers)
+          print "Se encontro la tabla para", gambling.display_name.encode('utf-8'), "fecha", a_date, ", pero no los 20 numeros en LoteriasMundiales"
 
-        import_event = ImportEvent()
-        import_event.source = self.name
-        import_event.url = 'Not available'
-        import_event.date = a_date
-        import_event.gambling_name = gambling.name
-        import_event.result = numbers
-        import_event.save()
+        return None
 
-        publish_event("Se importo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
-
-      else:
-        print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales"
-    else:
-      print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales"
-
+    print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales"
 
 
 
