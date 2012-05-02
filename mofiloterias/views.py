@@ -21,11 +21,14 @@ def index(request):
     heads = []
     for g in s.gamblings.all():
       r = GamblingResult.objects.filter(gambling=g, date=last_gambling_date)
+      if r:
+        print r[0].result_as_list()
+        
       ret = {}
       ret['name'] = g.name
       ret['display_name'] = g.display_name
       ret['date'] = last_gambling_date
-      ret['head_result'] = r.result[0] if r else None
+      ret['head_result'] = r[0].result_as_list()[0] if r else None
       heads.append(ret)
     gs.append(heads)
 
