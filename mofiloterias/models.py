@@ -3,7 +3,7 @@ from django.db import models
 class Event(models.Model):
   title = models.CharField(max_length=128)
   description = models.CharField(max_length=512)
+  time = models.IntegerField()
 
-  def __str__(self):
-    return str(self.title.encode('utf-8') + ':' + self.description.encode('utf-8'))
-  
+  def to_dict(self):
+    return {'title': self.title, 'description': self.description, 'time': self.time}

@@ -2,6 +2,11 @@
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.notification {
   border: 1px solid #000000;
   background-color: #DDDDDD;
+  margin: 3px;  
 }
+

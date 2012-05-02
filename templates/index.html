@@ -55,23 +55,46 @@
     </div>
   </div>
 
-  <div id="notifications">Eventos:<div id="events"></div></div>
+  <div>
+    <div id="notifications"></div>
+  </div>
 
   <script type="text/javascript">
-    function refreshEvents() {
-      $.get('/events', 
+    
+    function deleteEvents(t) {
+      $('.notification').each(function(i, e){
+        if ($(e).data('time') < (t - 1800)) {
+          $(e).remove();
+        }
+      });
+    }
+
+    function refreshEvents(since) {
+      var t = null;  
+      var params = {};
+      
+      if (since != undefined && since != null) {
+        params.since = since;
+      }
+      $.get('/events', params, 
         function(data) {
-          $("#events").empty();
-          $("#events").append("<ul></ul>");
-          
-          $(data).each(function(i, e){
-            $("#events ul").append("<li>" + e + "</li>");
+          t = data.time;
+
+          $(data.events).each(function(i, e){
+            var $noti = $('<div></div>');
+            $noti.addClass('notification');
+            $noti.data('time', e.time);
+            $noti.text(e.title + ": " + e.description);
+            $('#notifications').prepend($noti);
           });
         },
         "json"
       );
-      setTimeout(refreshEvents, 30000);
+
+      deleteEvents(t);
+      setTimeout(function() {refreshEvents(t);}, 10000);
     }
+
     setTimeout(refreshEvents, 1000);
   </script>
 </body>
