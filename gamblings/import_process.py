@@ -6,8 +6,9 @@ from datetime import date, datetime, time
 from gamblings.sources import *
 
 sources = [
-  NotitimbaSource(),
-  LoteriasMundialesSource()
+ NotitimbaSource(),
+ LoteriasMundialesSource(),
+  ViviTuSuerteSource()
 ]
 
 def daterange(start_date, end_date):
@@ -44,7 +45,7 @@ def import_from_sources(gambling, a_date):
   any_gambling_result = GamblingResult.objects.filter(gambling=gambling, date=a_date, verified=True)
 
   if not any_gambling_result:
-    for source in [s for s in sources if lambda x: x.accepts(gambling)]:
+    for source in (s for s in sources if s.accepts(gambling)):
       already_imported = ImportEvent.objects.filter(source=source.name, gambling=gambling, date=a_date)
       if not already_imported:
         source.import_results(gambling, a_date)
