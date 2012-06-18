@@ -55,7 +55,7 @@ def get_date_for_last_gambling():
   if any_gambling_today:
     return date
   else:
-    if date.weekday == 0:
+    if date.weekday() == 0:
       return date - timedelta(2)
     else:
       return date - timedelta(1)
