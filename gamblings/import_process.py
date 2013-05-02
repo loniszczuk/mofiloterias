@@ -6,8 +6,8 @@ from datetime import date, datetime, time
 from gamblings.sources import *
 
 sources = [
- NotitimbaSource(),
- LoteriasMundialesSource(),
+  NotitimbaSource(),
+  LoteriasMundialesSource(),
   ViviTuSuerteSource()
 ]
 
@@ -112,7 +112,7 @@ def merge_results(numbers):
 if __name__ == '__main__':
   print "######################## IMPORT %s #########################" % datetime.now().isoformat(' ')
 
-  usage = "usage: %prog [--from date --to date]"
+  usage = "usage: %prog [--start date --end date]"
   parser = OptionParser(usage=usage)
   parser.add_option('-s', '--start', dest='start', help='fecha desde donde importar (ej. 2012-03-28)')
   parser.add_option('-e', '--end', dest='end', help='fecha hasta donde importar (ej. 2012-03-28)')

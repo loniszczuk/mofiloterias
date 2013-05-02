@@ -2,73 +2,75 @@
 <head>
   <meta charset="UTF-8" />
   <title>Resultado de la quiniela</title>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="/static/css/notifications.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" >
+  <link rel="stylesheet" type="text/css" href="/static/css/datepicker.css" >
   <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
-</head>
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-notify.css" />
 <body>
-  <div id="cabezas">
-    Sorteos de la fecha {{date|date:"d/m"}}<br/>
-    {% for g in gamblings_summaries %}
-    <div class="resumen_cabezas">
-    <ul>
-      {% for h in g %}
-        <li>{{ h.display_name }}:
-          {% if h.head_result %}
-          <a href="resultados?gambling_name={{h.name}}&date={{h.date|date:"Y-m-d"}}">{{ h.head_result }}</a>
-          {% endif %}
-        </li>
+
+  <div class="container">
+    <div id="cabezas">
+      Sorteos de la fecha {{date|date:"d/m"}}<br/>
+      {% for g in gamblings_summaries %}
+      <div class="resumen_cabezas">
+      <ul>
+        {% for h in g %}
+          <li>{{ h.display_name }}:
+            {% if h.head_result %}
+            <a href="resultados?gambling_name={{h.name}}&date={{h.date|date:"Y-m-d"}}">{{ h.head_result }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+      </div>
       {% endfor %}
-    </ul>
     </div>
-    {% endfor %}
-  </div>
 
-  <div>
-    <div id="seleccionar_sorteo" class="formularios">
-      Ver sorteos
-      <form action="resultados" method="GET">
-        Fecha(año-mes-dia): <input type="text" name="date" value="{{date|date:"Y-m-d"}}"/> <br/>
-        Sorteo: 
-        <select name="gambling_name">
-          {% for g in gamblings %}
-            <option value="{{ g.name }}">{{ g.display_name }}</option>
-          {% endfor %}
-        </select>
-        <br>
-        <input type="submit" value="Ver resultado" />
-      </form>
-    </div>
-    <div id="seleccionar_extracto" class="formularios">
-      Ver extractos
-      <form action="extractos" method="GET">
-        Fecha(año-mes-dia): <input type="text" name="date" value="{{date|date:"Y-m-d"}}"/> <br/>
-        Extracto:
-        <select name="summary_name">
-          {% for summary_name in summaries %}
-            <option value="{{ summary_name }}">{{ summary_name }}</option>
-          {% endfor %}
-        </select>
-        <br>
-        <input type="submit" value="Ver extracto" />
-      </form>
+    <div>
+      <div id="seleccionar_sorteo" class="formularios">
+        Ver sorteos
+        <form action="resultados" method="GET">
+          Fecha: <input type="text" class="datepicker" name="date" value="{{date|date:"Y-m-d"}}"/> <br/>
+          Sorteo: 
+          <select name="gambling_name">
+            {% for g in gamblings %}
+              <option value="{{ g.name }}">{{ g.display_name }}</option>
+            {% endfor %}
+          </select>
+          <br>
+          <input type="submit" value="Ver resultado" />
+        </form>
+      </div>
+      <div id="seleccionar_extracto" class="formularios">
+        Ver extractos
+        <form action="extractos" method="GET">
+          Fecha: <input type="text" class="datepicker" name="date" value="{{date|date:"Y-m-d"}}"/> <br/>
+          Extracto:
+          <select name="summary_name">
+            {% for summary_name in summaries %}
+              <option value="{{ summary_name }}">{{ summary_name }}</option>
+            {% endfor %}
+          </select>
+          <br>
+          <input type="submit" value="Ver extracto" />
+        </form>
+      </div>
     </div>
   </div>
 
-  <div>
-    <div id="notifications"></div>
-  </div>
+  <div class='notifications bottom-right'></div>
+
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap-notify.js"></script>
 
   <script type="text/javascript">
     
-    function deleteEvents(t) {
-      $('.notification').each(function(i, e){
-        if ($(e).data('time') < (t - 1800)) {
-          $(e).remove();
-        }
-      });
-    }
-
+    $('.datepicker').datepicker({
+      format: 'yyyy-mm-dd'
+    });
+    
     function refreshEvents(since) {
       var t = null;  
       var params = {};
@@ -76,22 +78,26 @@
       if (since != undefined && since != null) {
         params.since = since;
       }
+      
       $.get('/events', params, 
         function(data) {
           t = data.time;
 
           $(data.events).each(function(i, e){
-            var $noti = $('<div></div>');
-            $noti.addClass('notification');
-            $noti.data('time', e.time);
-            $noti.text(e.title + ": " + e.description);
-            $('#notifications').prepend($noti);
+            var type = "success";
+            if (e.title == "VERIFICACION") {
+              type = "info"
+            }
+            $(".bottom-right").notify({
+              type: type,
+              message: {text: e.title + ": " + e.description},
+              fadeOut: {enabled: true, delay: 10000},
+            }).show();
           });
         },
         "json"
       );
 
-      deleteEvents(t);
       setTimeout(function() {refreshEvents(t);}, 10000);
     }
 
