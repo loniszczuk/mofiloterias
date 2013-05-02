@@ -5,6 +5,7 @@ from gamblings.models import Gambling, GamblingSummary, GamblingConfiguration, G
 from mofiloterias.models import Event
 from mofiloterias import today, now
 from datetime import timedelta, date
+from time import time
 
 import json
 
@@ -17,12 +18,9 @@ def index(request):
   summaries = GamblingSummary.objects.filter(days_of_week__contains=last_gambling_date.weekday())
   gs = []
   for s in summaries:
-    print s.gamblings.all()
     heads = []
     for g in s.gamblings.all():
       r = GamblingResult.objects.filter(gambling=g, date=last_gambling_date)
-      if r:
-        print r[0].result_as_list()
         
       ret = {}
       ret['name'] = g.name
@@ -33,19 +31,27 @@ def index(request):
     gs.append(heads)
 
   summaries_names = map(lambda s: s.name, summaries)
-  print summaries_names
 
   return render_to_response('index.html', 
     {'gamblings': glamblings, 'summaries': summaries_names, 'date': last_gambling_date, 'gamblings_summaries': gs} )
 
 
 def events(request):
-  events = Event.objects.all().order_by('-id')[:10]
+  if not request.GET.get('since'):
+    t = int(time()) - 1800
+    events = Event.objects.filter(time__gt=t).order_by('time')[:10]
 
-  last_events_as_str = map(lambda x: str(x), events)
+  else:
+    t = int(request.GET.get('since'))
+    events = Event.objects.filter(time__gt=t).order_by('time')
 
-  return HttpResponse(json.dumps(last_events_as_str), mimetype="application/json")
+  last_events_as_dicts = map(lambda x: x.to_dict(), events)
+  ret = {
+    'events' : last_events_as_dicts,
+    'time' : int(time())
+  }
 
+  return HttpResponse(json.dumps(ret), mimetype="application/json")
 
 def get_date_for_last_gambling():
   date = today()

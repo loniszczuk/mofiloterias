@@ -11,12 +11,9 @@ notitimba_gambling_name_mapping = {
   'prim_nac':1,
   'prim_stafe':16,
   'mat_prov':2,
-  'mat_prov_sab':2,
   'mat_nac':3,
-  'mat_nac_sab':3,
   'mat_mont':8,
   'mat_stafe':14,
-  'mat_stafe_sab':14,
   'vesp_prov':4,
   'vesp_nac':5,
   'vesp_stafe':15,
@@ -41,6 +38,8 @@ class NotitimbaSource:
     print "Descargando el sorteo", gambling.display_name.encode('utf-8'), "de la fecha", a_date, "desde Notitimba"
     
     url = "http://www.notitimba.com/quiniela/premios.php?fch=%s&lot=%s" % (a_date, notitimba_gambling_name_mapping[gambling.name])
+    print "url:", url
+    
     f = urllib.urlopen(url)
     page = f.read()
 
@@ -186,5 +185,90 @@ class LoteriasMundialesSource:
 
     print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales"
 
+vivitusuerte_gambling_name_mapping = {
+  'prim_prov': (24, 'Provincia - La Primera'),
+  'prim_nac': (25, 'Nacional - La Primera'),
+  'prim_stafe': (38, 'Santa Fe - La Primera'),
+  'mat_prov': (24, 'Provincia - Matutino'),
+  'mat_nac': (25, 'Nacional - Matutino'),
+  'mat_mont': (23, 'Montevideo - Matutino'),
+  'mat_stafe': (38, 'Santa Fe - Matutino'),
+  'vesp_prov': (24, 'Provincia - Vespertino'),
+  'vesp_nac': (25, 'Nacional - Vespertino'),
+  'vesp_stafe': (38, 'Santa Fe - Vespertino'),
+  'noct_prov': (24, 'Provincia - Nocturna'),
+  'noct_nac': (25, 'Nacional - Nocturna'),
+  'noct_mont': (23, 'Montevideo - Nocturna'),
+  'noct_stafe': (38, 'Santa Fe - Nocturna'),
+  'noct_cord': (28, 'rdoba - Nocturna'),
+  'noct_sant': (48, 'Santiago - Nocturna'),
+  'noct_mend': (53, 'Mendoza - Nocturna'),
+}
+class ViviTuSuerteSource:
 
+  def __init__(self):
+    self.name = "ViviTuSuerte"
+
+  def accepts(self, gambling):
+    return vivitusuerte_gambling_name_mapping.get(gambling.name) != None
+
+  def import_results(self, gambling, a_date):
+    print "Descargando el sorteo", gambling.display_name.encode('utf-8'), "de la fecha", a_date, "desde ViviTuSuerte"
+    
+    conf = vivitusuerte_gambling_name_mapping[gambling.name]
+
+    url = "http://www.vivitusuerte.com/datospizarra_loteria.php"
+    params = urllib.urlencode({
+      'fecha': a_date.strftime('%Y/0%m/0%d'),
+      'loteria': conf[0]
+    })
+
+    f = urllib.urlopen(url, params)
+    lines = f.readlines()
+
+    table_found = False
+    numbers_found = 0
+    numbers_tmp = [[],[]]
+    numbers = []
+    regex_number = r'>(\d{3,5})<'
+
+    for l in lines:
+
+      if not table_found:
+        # busco el encabezado de la tabla que me interesa
+        if conf[1] in l:
+          table_found = True
+      else:
+        # busco los numeros
+        match = re.search(regex_number, l)
+
+        if match and match.group(1):
+          i = numbers_found % 2
+          numbers_tmp[i].append(match.group(1))
+
+          numbers_found += 1
+
+          if numbers_found == 20:
+            numbers = numbers_tmp[0] + numbers_tmp[1]
+            break
+
+    if len(numbers) == 20:
+      if 'mont' in gambling.name:
+        numbers = map(lambda n: n[-3:], numbers)
+      else:
+        numbers = map(lambda n: n[-4:], numbers)
+
+      print "Resultado encontrado para",gambling.display_name.encode('utf-8'),"fecha", a_date, ":", numbers
+      import_event = ImportEvent()
+      import_event.source = self.name
+      import_event.url = 'Not available'
+      import_event.date = a_date
+      import_event.gambling = gambling
+      import_event.result = numbers
+      import_event.save()
+
+
+      publish_event('IMPORTACION', "sorteo %s fecha %s desde ViviTuSuerte" % (gambling.display_name, a_date))
+    else:
+      print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, " en ViviTuSuerte"
 

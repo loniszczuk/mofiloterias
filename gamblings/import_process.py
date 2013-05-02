@@ -7,7 +7,8 @@ from gamblings.sources import *
 
 sources = [
   NotitimbaSource(),
-  LoteriasMundialesSource()
+  LoteriasMundialesSource(),
+  ViviTuSuerteSource()
 ]
 
 def daterange(start_date, end_date):
@@ -44,7 +45,7 @@ def import_from_sources(gambling, a_date):
   any_gambling_result = GamblingResult.objects.filter(gambling=gambling, date=a_date, verified=True)
 
   if not any_gambling_result:
-    for source in [s for s in sources if lambda x: x.accepts(gambling)]:
+    for source in (s for s in sources if s.accepts(gambling)):
       already_imported = ImportEvent.objects.filter(source=source.name, gambling=gambling, date=a_date)
       if not already_imported:
         source.import_results(gambling, a_date)
@@ -111,7 +112,7 @@ def merge_results(numbers):
 if __name__ == '__main__':
   print "######################## IMPORT %s #########################" % datetime.now().isoformat(' ')
 
-  usage = "usage: %prog [--from date --to date]"
+  usage = "usage: %prog [--start date --end date]"
   parser = OptionParser(usage=usage)
   parser.add_option('-s', '--start', dest='start', help='fecha desde donde importar (ej. 2012-03-28)')
   parser.add_option('-e', '--end', dest='end', help='fecha hasta donde importar (ej. 2012-03-28)')
