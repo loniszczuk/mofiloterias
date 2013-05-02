@@ -5,7 +5,7 @@
   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" >
   <link rel="stylesheet" type="text/css" href="/static/css/datepicker.css" >
   <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
-  <link rel="stylesheet" type="text/css" href="/static/css/notifications.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-notify.css" />
 <body>
 
   <div class="container">
@@ -58,13 +58,12 @@
     </div>
   </div>
 
-  <div>
-    <div id="notifications"></div>
-  </div>
+  <div class='notifications bottom-right'></div>
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
   <script type="text/javascript" src="/static/js/bootstrap.js"></script>
   <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap-notify.js"></script>
 
   <script type="text/javascript">
     
@@ -72,14 +71,6 @@
       format: 'yyyy-mm-dd'
     });
     
-    function deleteEvents(t) {
-      $('.notification').each(function(i, e){
-        if ($(e).data('time') < (t - 1800)) {
-          $(e).remove();
-        }
-      });
-    }
-
     function refreshEvents(since) {
       var t = null;  
       var params = {};
@@ -87,22 +78,26 @@
       if (since != undefined && since != null) {
         params.since = since;
       }
+      
       $.get('/events', params, 
         function(data) {
           t = data.time;
 
           $(data.events).each(function(i, e){
-            var $noti = $('<div></div>');
-            $noti.addClass('notification');
-            $noti.data('time', e.time);
-            $noti.text(e.title + ": " + e.description);
-            $('#notifications').prepend($noti);
+            var type = "success";
+            if (e.title == "VERIFICACION") {
+              type = "info"
+            }
+            $(".bottom-right").notify({
+              type: type,
+              message: {text: e.title + ": " + e.description},
+              fadeOut: {enabled: true, delay: 10000},
+            }).show();
           });
         },
         "json"
       );
 
-      deleteEvents(t);
       setTimeout(function() {refreshEvents(t);}, 10000);
     }
 
