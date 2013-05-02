@@ -38,6 +38,8 @@ class NotitimbaSource:
     print "Descargando el sorteo", gambling.display_name.encode('utf-8'), "de la fecha", a_date, "desde Notitimba"
     
     url = "http://www.notitimba.com/quiniela/premios.php?fch=%s&lot=%s" % (a_date, notitimba_gambling_name_mapping[gambling.name])
+    print "url:", url
+    
     f = urllib.urlopen(url)
     page = f.read()
 
