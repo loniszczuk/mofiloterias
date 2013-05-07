@@ -44,3 +44,4 @@ class ImportEvent(models.Model):
 
   def result_as_list(self):
     return map(lambda x: x.encode('utf-8'), self.result.replace("'", '').replace(' ','')[1:-1].split(','))
+

@@ -1,7 +1,9 @@
-from optparse import OptionParser
+import mofiloterias.settings
 from mofiloterias import publish_event
 from gamblings.models import GamblingConfiguration, GamblingResult, ImportEvent
 from datetime import date, datetime, time
+
+import pika, json
 
 from gamblings.sources import *
 
@@ -10,35 +12,6 @@ sources = [
   LoteriasMundialesSource(),
   ViviTuSuerteSource()
 ]
-
-def daterange(start_date, end_date):
-  for n in range((end_date - start_date).days):
-    yield start_date + timedelta(n)
-
-def save_gambling_results_by_date(a_date):
-
-  weekday = a_date.weekday()
-  now = datetime.now()
-  timenow = time(now.hour, now.minute, now.second)
-
-  configurations = GamblingConfiguration.objects.select_related().filter(
-    days_of_week__contains=weekday,
-    finish_time__lt=timenow,
-  )
-
-  for c in configurations:
-    import_from_sources(c.gambling, a_date)
-
-def save_past_gambling_results_by_date(a_date):
-
-  weekday = a_date.weekday()
-
-  configurations = GamblingConfiguration.objects.select_related().filter(
-    days_of_week__contains=weekday
-  )
-
-  for c in configurations:
-    import_from_sources(c.gambling, a_date)
 
 def import_from_sources(gambling, a_date):
   
@@ -107,28 +80,35 @@ def merge_results(numbers):
     return (not any_difference, result)
 
 
+def import_callback(ch, method, properties, body):
+
+  gambling_to_import = json.loads(body)
+
+  a_date = datetime.strptime(gambling_to_import['date'], '%Y-%m-%d').date() 
+  gambling_name = gambling_to_import['name']
+
+  print "importing", gambling_name, a_date
+
+  configuration = GamblingConfiguration.objects.select_related().get(
+    days_of_week__contains=a_date.weekday(),
+    gambling__name=gambling_name,
+  )
+
+  import_from_sources(configuration.gambling, a_date)
+
+  ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
 if __name__ == '__main__':
-  print "######################## IMPORT %s #########################" % datetime.now().isoformat(' ')
 
-  usage = "usage: %prog [--start date --end date]"
-  parser = OptionParser(usage=usage)
-  parser.add_option('-s', '--start', dest='start', help='fecha desde donde importar (ej. 2012-03-28)')
-  parser.add_option('-e', '--end', dest='end', help='fecha hasta donde importar (ej. 2012-03-28)')
+  print "########## Starting Import Worker %s ##########" % datetime.now().isoformat(' ')
 
-  (options, args) = parser.parse_args()
+  connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+  channel = connection.channel()
 
-  if options.start or options.end:
-    if not (options.start and options.end) :
-      print "Error se necesitan las dos fechas para importar"
-    else:
-      from_date = datetime.strptime(options.start, '%Y-%m-%d').date()
-      to_date = datetime.strptime(options.end, '%Y-%m-%d').date()
-      for a_date in daterange(from_date, to_date):
-        save_past_gambling_results_by_date(a_date)
+  channel.queue_declare(queue='import_gamblings', durable=True)
 
-  else:
-    today = date.today()
-    save_gambling_results_by_date(today)
+  channel.basic_qos(prefetch_count=1)
+  channel.basic_consume(import_callback, queue='import_gamblings')
 
+  channel.start_consuming()
