@@ -1,0 +1,50 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Resultado de la quiniela</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" >
+  <link rel="stylesheet" type="text/css" href="/static/css/datepicker.css" >
+  <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-notify.css" />
+<body>
+
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand" href="/">MOFI Loterias</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li><a href="/importar">Importar resultados</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+  </div>
+
+  {% block content %}
+  {% endblock %}
+
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap-notify.js"></script>
+
+  {% block scripts %}
+  {% endblock %}
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-40610150-1', 'mofiloterias.com.ar');
+    ga('send', 'pageview');
+  </script>
+
+</body>
+</html>

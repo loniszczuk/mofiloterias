@@ -1,117 +1,98 @@
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <title>Resultado de la quiniela</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" >
-  <link rel="stylesheet" type="text/css" href="/static/css/datepicker.css" >
-  <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
-  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-notify.css" />
-<body>
+{% extends "base.html" %}
 
-  <div class="container">
-    <div id="cabezas">
-      Sorteos de la fecha {{date|date:"d/m"}}<br/>
-      {% for g in gamblings_summaries %}
-      <div class="resumen_cabezas">
-      <ul>
-        {% for h in g %}
-          <li>{{ h.display_name }}:
-            {% if h.head_result %}
-            <a href="resultados?gambling_name={{h.name}}&date={{h.date|date:"Y-m-d"}}">{{ h.head_result }}</a>
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-      </div>
+{% block content %}
+<div class="container">
+  <div id="cabezas">
+    Sorteos de la fecha {{date|date:"d/m"}}<br/>
+    {% for g in gamblings_summaries %}
+    <div class="resumen_cabezas">
+    <ul>
+      {% for h in g %}
+        <li>{{ h.display_name }}:
+          {% if h.head_result %}
+          <a href="resultados?gambling_name={{h.name}}&date={{h.date|date:"Y-m-d"}}">{{ h.head_result }}</a>
+          {% endif %}
+        </li>
       {% endfor %}
+    </ul>
     </div>
-
-    <div>
-      <div id="seleccionar_sorteo" class="formularios">
-        Ver sorteos
-        <form action="resultados" method="GET">
-          Fecha: <input type="text" class="datepicker" name="date" value="{{date|date:"Y-m-d"}}"/> <br/>
-          Sorteo: 
-          <select name="gambling_name">
-            {% for g in gamblings %}
-              <option value="{{ g.name }}">{{ g.display_name }}</option>
-            {% endfor %}
-          </select>
-          <br>
-          <input type="submit" value="Ver resultado" />
-        </form>
-      </div>
-      <div id="seleccionar_extracto" class="formularios">
-        Ver extractos
-        <form action="extractos" method="GET">
-          Fecha: <input type="text" class="datepicker" name="date" value="{{date|date:"Y-m-d"}}"/> <br/>
-          Extracto:
-          <select name="summary_name">
-            {% for summary_name in summaries %}
-              <option value="{{ summary_name }}">{{ summary_name }}</option>
-            {% endfor %}
-          </select>
-          <br>
-          <input type="submit" value="Ver extracto" />
-        </form>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 
-  <div class='notifications bottom-right'></div>
+  <div>
+    <div id="seleccionar_sorteo" class="formularios">
+      Ver sorteos
+      <form action="resultados" method="GET" autocomplete="off">
+        Fecha: <input type="text" class="datepicker" name="date" value="{{date|date:"Y-m-d"}}" /> <br/>
+        Sorteo: 
+        <select name="gambling_name">
+          {% for g in gamblings %}
+            <option value="{{ g.name }}">{{ g.display_name }}</option>
+          {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Ver resultado" />
+      </form>
+    </div>
+    <div id="seleccionar_extracto" class="formularios">
+      Ver extractos
+      <form action="extractos" method="GET" autocomplete="off">
+        Fecha: <input type="text" class="datepicker" name="date" value="{{date|date:"Y-m-d"}}" /> <br/>
+        Extracto:
+        <select name="summary_name">
+          {% for summary_name in summaries %}
+            <option value="{{ summary_name }}">{{ summary_name }}</option>
+          {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Ver extracto" />
+      </form>
+    </div>
+  </div>
+</div>
 
-  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/js/bootstrap.js"></script>
-  <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
-  <script type="text/javascript" src="/static/js/bootstrap-notify.js"></script>
+<div class='notifications bottom-right'></div>
+{% endblock %}
 
-  <script type="text/javascript">
+{% block scripts %}
+<script type="text/javascript">
+  
+  $('.datepicker').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true
+  });
+  
+  function refreshEvents(since) {
+    var t = null;  
+    var params = {};
     
-    $('.datepicker').datepicker({
-      format: 'yyyy-mm-dd',
-      autoclose: true
-    });
-    
-    function refreshEvents(since) {
-      var t = null;  
-      var params = {};
-      
-      if (since != undefined && since != null) {
-        params.since = since;
-      }
-      
-      $.get('/events', params, 
-        function(data) {
-          t = data.time;
-
-          $(data.events).each(function(i, e){
-            var type = "success";
-            if (e.title == "VERIFICACION") {
-              type = "info"
-            }
-            $(".bottom-right").notify({
-              type: type,
-              message: {text: e.title + ": " + e.description},
-              fadeOut: {enabled: true, delay: 10000},
-            }).show();
-          });
-        },
-        "json"
-      );
-
-      setTimeout(function() {refreshEvents(t);}, 10000);
+    if (since != undefined && since != null) {
+      params.since = since;
     }
+    
+    $.get('/events', params, 
+      function(data) {
+        t = data.time;
 
-    setTimeout(refreshEvents, 1000);
-  </script>
+        $(data.events).each(function(i, e){
+          var type = "success";
+          if (e.title == "VERIFICACION") {
+            type = "info"
+          }
+          $(".bottom-right").notify({
+            type: type,
+            message: {text: e.title + ": " + e.description},
+            fadeOut: {enabled: true, delay: 10000},
+          }).show();
+        });
+      },
+      "json"
+    );
 
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-40610150-1', 'mofiloterias.com.ar');
-    ga('send', 'pageview');
-  </script>
-</body>
-</html>
+    setTimeout(function() {refreshEvents(t);}, 10000);
+  }
+
+  setTimeout(refreshEvents, 1000);
+</script>
+
+{% endblock %}

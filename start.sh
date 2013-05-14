@@ -9,4 +9,6 @@ echo "######################## START API "`date`" ##########################" >>
 export DJANGO_SETTINGS_MODULE=mofiloterias.settings
 export PYTHONPATH=.:..
 
+nohup python gamblings/import_worker.py $* 2>> $ERRORLOG >> $LOG &
+
 nohup uwsgi -C -s /var/nginx/mofiloterias-uwsgi.sock -i -M -w mofiloterias.wsgi -z 5 -p 10 -l 64 -L -R 10000 -b 8192 --no-orphans --pidfile pid 2>> $ERRORLOG >> $LOG &
