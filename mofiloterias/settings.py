@@ -100,7 +100,6 @@ SECRET_KEY = 'u$53w++8+6h60#&h*fxk(h_lo+v@_3eo4j+t%%y^6qsh70u3k#'
 TEMPLATE_LOADERS = (
   'django.template.loaders.filesystem.Loader',
   'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -109,6 +108,10 @@ MIDDLEWARE_CLASSES = (
   'django.middleware.csrf.CsrfViewMiddleware',
   'django.contrib.auth.middleware.AuthenticationMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+  'django.contrib.auth.context_processors.auth',
 )
 
 ROOT_URLCONF = 'mofiloterias.urls'

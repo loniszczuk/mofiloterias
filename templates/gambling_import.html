@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div>
+    <div id="seleccionar_sorteo" class="formularios">
+      Importar sorteos
+      <form action="importar" method="POST" autocomplete="off">
+        Fecha: <input type="text" class="datepicker" name="date" value="{{date|date:"Y-m-d"}}" /> <br/>
+        Sorteos : 
+        {% for g in gamblings %}
+        <input type="checkbox" name="{{ g.name }}" value="True">{{ g.display_name }}
+        {% endfor %}
+        {% csrf_token %} <br/>
+        <input type="submit" value="Importar" />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  
+  $('.datepicker').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true
+  });
+</script>
+{% endblock %}

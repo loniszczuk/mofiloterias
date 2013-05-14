@@ -1,9 +1,10 @@
 # coding: utf-8
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.template import RequestContext
 from gamblings.models import Gambling, GamblingConfiguration, GamblingResult, GamblingSummary
-import urllib, re, json, subprocess, os
-from datetime import datetime
+import urllib, re, json, subprocess, os, pika
+from datetime import datetime, date
 
 def gambling_result(request):
 
@@ -23,7 +24,7 @@ def gambling_result(request):
 
   model = {'display_name': g.display_name, 'result': result}
   
-  return render_to_response('gambling_result.html', model )
+  return render_to_response('gambling_result.html', model, context_instance=RequestContext(request))
 
 def gambling_summaries(request):
 
@@ -69,3 +70,44 @@ def gambling_summaries(request):
 
   else:
     raise Http404
+
+def gambling_import(request):
+
+  if request.method == 'GET':
+    gamblings = Gambling.objects.values('name', 'display_name')
+    today = date.today()
+
+    return render_to_response('gambling_import.html', 
+      {'gamblings': gamblings, 
+      'date': today},
+      context_instance=RequestContext(request)
+    )
+  elif request.method == 'POST':
+    gamblings = Gambling.objects.values('name')
+    a_date = datetime.strptime(request.POST['date'], '%Y-%m-%d').date()
+    
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+    channel.queue_declare(queue='import_gamblings', durable=True)
+
+    for g in gamblings: 
+      if 'True' == request.POST.get(g['name']):
+        print 'Manually importing gambling', g['name']
+
+        message = json.dumps({'date': a_date.isoformat(), 'name': g['name']})
+        channel.basic_publish(exchange='',
+          routing_key='import_gamblings',
+          body=message,
+          properties=pika.BasicProperties(
+            delivery_mode = 2, # make message persistent
+          )
+        )
+
+    return redirect("/")
+
+
+
+
+
+
+
