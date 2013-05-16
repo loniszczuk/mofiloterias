@@ -89,12 +89,13 @@ def import_callback(ch, method, properties, body):
 
     print "importing", gambling_name, a_date
 
-    configuration = GamblingConfiguration.objects.select_related().get(
+    configurations = GamblingConfiguration.objects.select_related().filter(
       days_of_week__contains=a_date.weekday(),
       gambling__name=gambling_name,
     )
-
-    import_from_sources(configuration.gambling, a_date)
+    if configurations:
+      configuration = configurations[0]
+      import_from_sources(configuration.gambling, a_date)
 
     ch.basic_ack(delivery_tag = method.delivery_tag)
   except:
