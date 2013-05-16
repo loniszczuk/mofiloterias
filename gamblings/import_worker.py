@@ -3,7 +3,7 @@ from mofiloterias import publish_event
 from gamblings.models import GamblingConfiguration, GamblingResult, ImportEvent
 from datetime import date, datetime, time
 
-import pika, json
+import pika, json, sys
 
 from gamblings.sources import *
 
@@ -81,22 +81,24 @@ def merge_results(numbers):
 
 
 def import_callback(ch, method, properties, body):
+  try: 
+    gambling_to_import = json.loads(body)
 
-  gambling_to_import = json.loads(body)
+    a_date = datetime.strptime(gambling_to_import['date'], '%Y-%m-%d').date() 
+    gambling_name = gambling_to_import['name']
 
-  a_date = datetime.strptime(gambling_to_import['date'], '%Y-%m-%d').date() 
-  gambling_name = gambling_to_import['name']
+    print "importing", gambling_name, a_date
 
-  print "importing", gambling_name, a_date
+    configuration = GamblingConfiguration.objects.select_related().get(
+      days_of_week__contains=a_date.weekday(),
+      gambling__name=gambling_name,
+    )
 
-  configuration = GamblingConfiguration.objects.select_related().get(
-    days_of_week__contains=a_date.weekday(),
-    gambling__name=gambling_name,
-  )
+    import_from_sources(configuration.gambling, a_date)
 
-  import_from_sources(configuration.gambling, a_date)
-
-  ch.basic_ack(delivery_tag = method.delivery_tag)
+    ch.basic_ack(delivery_tag = method.delivery_tag)
+  except:
+     print "Unexpected error:", sys.exc_info()[0]
 
 
 if __name__ == '__main__':
