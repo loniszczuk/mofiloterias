@@ -94,7 +94,7 @@ def gambling_import(request):
       if 'True' == request.POST.get(g['name']):
         print 'Manually importing gambling', g['name']
 
-        message = json.dumps({'date': a_date.isoformat(), 'name': g['name']})
+        message = json.dumps({'date': a_date.isoformat(), 'name': g['name'], 'retries': 0})
         channel.basic_publish(exchange='',
           routing_key='import_gamblings',
           body=message,

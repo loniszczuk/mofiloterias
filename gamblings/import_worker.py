@@ -81,8 +81,8 @@ def merge_results(numbers):
 
 
 def import_callback(ch, method, properties, body):
+  gambling_to_import = json.loads(body)
   try: 
-    gambling_to_import = json.loads(body)
 
     a_date = datetime.strptime(gambling_to_import['date'], '%Y-%m-%d').date() 
     gambling_name = gambling_to_import['name']
@@ -97,9 +97,22 @@ def import_callback(ch, method, properties, body):
       configuration = configurations[0]
       import_from_sources(configuration.gambling, a_date)
 
-    ch.basic_ack(delivery_tag = method.delivery_tag)
   except:
      print "Unexpected error:", sys.exc_info()[0]
+     retries = gambling_to_import['retries']
+     if retries < 3 :
+        gambling_to_import['retries'] = retries + 1
+        message = json.dumps(gambling_to_import)
+        rabbit_channel.basic_publish(exchange='',
+          routing_key='import_gamblings',
+          body=message,
+          properties=pika.BasicProperties(
+           delivery_mode = 2, # make message persistent
+          )
+        )
+
+
+  ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
 if __name__ == '__main__':
