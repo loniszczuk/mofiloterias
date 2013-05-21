@@ -9,5 +9,4 @@ echo "######################## START WORKER "`date`" ##########################"
 export DJANGO_SETTINGS_MODULE=mofiloterias.settings
 export PYTHONPATH=/home/leandro/mofiloterias:/home/leandro
 
-nohup python gamblings/import_worker.py 2>> $ERRORLOG >> $LOG &
-echo $! > worker.pid
+python gamblings/import_worker.py 2>> $ERRORLOG >> $LOG
