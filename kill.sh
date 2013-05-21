@@ -9,10 +9,3 @@ if [[ -e "pid" ]]; then
 
     kill -9 `cat pid`;
 fi
-
-if [[ -e "worker.pid" ]]; then
-    echo "######################## KILL API "`date`" ##########################" >> $LOG;
-    echo "######################## KILL API "`date`" ##########################" >> $ERRORLOG;
-
-    kill -9 `cat worker.pid`;
-fi
