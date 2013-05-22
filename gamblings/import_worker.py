@@ -103,7 +103,7 @@ def import_callback(ch, method, properties, body):
      if retries < 3 :
         gambling_to_import['retries'] = retries + 1
         message = json.dumps(gambling_to_import)
-        rabbit_channel.basic_publish(exchange='',
+        ch.basic_publish(exchange='',
           routing_key='import_gamblings',
           body=message,
           properties=pika.BasicProperties(
