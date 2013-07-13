@@ -37,43 +37,45 @@ class NotitimbaSource:
     return notitimba_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    logger.info("*******************************************************") 
-    logger.info("Descargando el sorteo %s de la fecha %s desde Notitimba" 
-      %s (gambling.display_name.encode('utf-8'), a_date))
+    try:
+      logger.info("*******************************************************") 
+      logger.info("Descargando el sorteo %s de la fecha %s desde Notitimba" % (gambling.display_name, a_date))
     
-    url = "http://www.notitimba.com/quiniela/premios.php?fch=%s&lot=%s" % (a_date, notitimba_gambling_name_mapping[gambling.name])
-    logger.info("Url : %s" % url)
+      url = "http://www.notitimba.com/quiniela/premios.php?fch=%s&lot=%s" % (a_date, notitimba_gambling_name_mapping[gambling.name])
+      logger.info("Url : %s" % url)
     
-    f = urllib.urlopen(url)
-    page = f.read()
+      f = urllib.urlopen(url)
+      page = f.read()
 
-    if 'mont' in gambling.name:
-      regex = r"<td>(<font color=red><b>)?\s(\d{3})</td>"
-    else:
-      regex = r"<td>(<font color=red><b>)?(\d{4})</td>"
+      if 'mont' in gambling.name:
+        regex = r"<td>(<font color=red><b>)?\s(\d{3})</td>"
+      else:
+        regex = r"<td>(<font color=red><b>)?(\d{4})</td>"
 
-    matches = re.findall(regex, page)
-    if len(matches) == 20:
-      numbers = []
-      for i in xrange(10):
-        numbers.append(matches[i*2][1])
-      for i in xrange(10):
-        numbers.append(matches[i*2+1][1])
+      matches = re.findall(regex, page)
+      if len(matches) == 20:
+        numbers = []
+        for i in xrange(10):
+          numbers.append(matches[i*2][1])
+        for i in xrange(10):
+          numbers.append(matches[i*2+1][1])
 
-      logger.info("Resultado encontrado: %s" % numbers)
+        logger.info("Resultado encontrado: %s" % numbers)
 
-      import_event = ImportEvent()
-      import_event.source = self.name
-      import_event.url = url
-      import_event.date = a_date
-      import_event.gambling = gambling
-      import_event.result = numbers
-      import_event.save()
+        import_event = ImportEvent()
+        import_event.source = self.name
+        import_event.url = url
+        import_event.date = a_date
+        import_event.gambling = gambling
+        import_event.result = numbers
+        import_event.save()
 
-      publish_event('IMPORTACION', "sorteo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
+        publish_event('IMPORTACION', "sorteo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
 
-    else:
-      print "Resultado NO encontrado"
+      else:
+        logger.info("Resultado NO encontrado")
+    except: 
+      logger.error("Unexpected error: %s" % sys.exc_info()[0])
 
 
 
@@ -121,75 +123,77 @@ class LoteriasMundialesSource:
     return loteriasmundiales_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    logger.info("*******************************************************")
-    logger.info("Descargando el sorteo %s de la fecha %s desde LoteriasMundiales" % (gambling.display_name.encode('utf-8'), a_date))
-    conf = loteriasmundiales_gambling_name_mapping[gambling.name]
+    try:
+      logger.info("*******************************************************")
+      logger.info("Descargando el sorteo %s de la fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
+      conf = loteriasmundiales_gambling_name_mapping[gambling.name]
 
-    url = "http://www.loteriasmundiales.com.ar/index.asp"
-    params = urllib.urlencode({
-      'cDia': a_date.day, 
-      'cMes': a_date.month, 
-      'cAno': a_date.year, 
-      'pagina': conf[0]
-    })
-    f = urllib.urlopen(url, params)
-    page = f.read()
+      url = "http://www.loteriasmundiales.com.ar/index.asp"
+      params = urllib.urlencode({
+        'cDia': a_date.day, 
+        'cMes': a_date.month, 
+        'cAno': a_date.year, 
+        'pagina': conf[0]
+      })
+      f = urllib.urlopen(url, params)
+      page = f.read()
 
-    regex_date = r"sTitulo.innerHTML='RESULTADOS DEL.*"
+      regex_date = r"sTitulo.innerHTML='RESULTADOS DEL.*"
 
-    page_date = re.search(regex_date, page)
-    day = a_date.day if a_date.day > 9 else "0%s" % a_date.day
-    month = loteriasmundiales_month_mapping[a_date.month]
-    year = a_date.year
+      page_date = re.search(regex_date, page)
+      day = a_date.day if a_date.day > 9 else "0%s" % a_date.day
+      month = loteriasmundiales_month_mapping[a_date.month]
+      year = a_date.year
 
-    expected_date = "%s de %s de %s" % (day, month, year)
+      expected_date = "%s de %s de %s" % (day, month, year)
 
 
-    if not page_date or page_date.group(0).lower().find(expected_date) < 0:
-      logger.info("No coinciden las fechas. Fecha de la pagina: %s ; Fecha esperada: %s"
-       % (page_date, expected_date) )
-      return None
-
-    regex_table = r"<table width=\"180\".*?</table>"
-
-    all_results = re.findall(regex_table, page)
-
-    for table_result in all_results:
-      if conf[1] in table_result:
-
-        regex_numbers = r">(\d{3,5})<"
-
-        matches = re.findall(regex_numbers, table_result)
-
-        if len(matches) == 20:
-          numbers = []
-          for i in xrange(10):
-            numbers.append(matches[i*2])
-          for i in xrange(10):
-            numbers.append(matches[i*2+1])
-
-          if 'mont' in gambling.name:
-            numbers = map(lambda n: n[-3:], numbers)
-          else:
-            numbers = map(lambda n: n[-4:], numbers)
-
-          logger.info("Resultado encontrado: %s" % numbers)
-          import_event = ImportEvent()
-          import_event.source = self.name
-          import_event.url = 'Not available'
-          import_event.date = a_date
-          import_event.gambling = gambling
-          import_event.result = numbers
-          import_event.save()
-
-          publish_event('IMPORTACION', "sorteo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
-
-        else:
-          logger.info("Se encontro la tabla pero no los 20 numeros")
-
+      if not page_date or page_date.group(0).lower().find(expected_date) < 0:
+        logger.info("No coinciden las fechas. Fecha de la pagina: %s ; Fecha esperada: %s" % (page_date, expected_date) )
         return None
 
-    logger.info("Resultado NO encontrado")
+      regex_table = r"<table width=\"180\".*?</table>"
+
+      all_results = re.findall(regex_table, page)
+
+      for table_result in all_results:
+        if conf[1] in table_result:
+
+          regex_numbers = r">(\d{3,5})<"
+
+          matches = re.findall(regex_numbers, table_result)
+
+          if len(matches) == 20:
+            numbers = []
+            for i in xrange(10):
+              numbers.append(matches[i*2])
+            for i in xrange(10):
+              numbers.append(matches[i*2+1])
+
+            if 'mont' in gambling.name:
+              numbers = map(lambda n: n[-3:], numbers)
+            else:
+              numbers = map(lambda n: n[-4:], numbers)
+
+            logger.info("Resultado encontrado: %s" % numbers)
+            import_event = ImportEvent()
+            import_event.source = self.name
+            import_event.url = 'Not available'
+            import_event.date = a_date
+            import_event.gambling = gambling
+            import_event.result = numbers
+            import_event.save()
+
+            publish_event('IMPORTACION', "sorteo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
+
+          else:
+            logger.info("Se encontro la tabla pero no los 20 numeros")
+
+          return None
+
+      logger.info("Resultado NO encontrado")
+    except: 
+      logger.error("Unexpected error: %s" % sys.exc_info()[0])
 
 vivitusuerte_gambling_name_mapping = {
   'prim_prov': (24, 'Provincia - La Primera'),
@@ -219,62 +223,66 @@ class ViviTuSuerteSource:
     return vivitusuerte_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    logger.info("*******************************************************")
-    logger.info("Descargando el sorteo %s de la fecha %s desde ViviTuSuerte" % (gambling.display_name.encode('utf-8'), a_date))
+    try:
+      logger.info("*******************************************************")
+      logger.info("Descargando el sorteo %s de la fecha %s desde ViviTuSuerte" % (gambling.display_name, a_date) )
     
-    conf = vivitusuerte_gambling_name_mapping[gambling.name]
+      conf = vivitusuerte_gambling_name_mapping[gambling.name]
 
-    url = "http://www.vivitusuerte.com/datospizarra_loteria.php"
-    params = urllib.urlencode({
-      'fecha': a_date.strftime('%Y/0%m/0%d'),
-      'loteria': conf[0]
-    })
+      url = "http://www.vivitusuerte.com/datospizarra_loteria.php"
+      params = urllib.urlencode({
+        'fecha': a_date.strftime('%Y/0%m/0%d'),
+        'loteria': conf[0]
+      })
 
-    f = urllib.urlopen(url, params)
-    lines = f.readlines()
+      f = urllib.urlopen(url, params)
+      lines = f.readlines()
 
-    table_found = False
-    numbers_found = 0
-    numbers_tmp = [[],[]]
-    numbers = []
-    regex_number = r'>(\d{3,5})<'
+      table_found = False
+      numbers_found = 0
+      numbers_tmp = [[],[]]
+      numbers = []
+      regex_number = r'>(\d{3,5})<'
 
-    for l in lines:
+      for l in lines:
 
-      if not table_found:
-        # busco el encabezado de la tabla que me interesa
-        if conf[1] in l:
-          table_found = True
+        if not table_found:
+          # busco el encabezado de la tabla que me interesa
+          if conf[1] in l:
+            table_found = True
+        else:
+          # busco los numeros
+          match = re.search(regex_number, l)
+
+          if match and match.group(1):
+            i = numbers_found % 2
+            numbers_tmp[i].append(match.group(1))
+
+            numbers_found += 1
+
+            if numbers_found == 20:
+              numbers = numbers_tmp[0] + numbers_tmp[1]
+              break
+
+      if len(numbers) == 20:
+        if 'mont' in gambling.name:
+          numbers = map(lambda n: n[-3:], numbers)
+        else:
+          numbers = map(lambda n: n[-4:], numbers)
+
+        logger.info("Resultado encontrado: %s" % numbers)
+        import_event = ImportEvent()
+        import_event.source = self.name
+        import_event.url = 'Not available'
+        import_event.date = a_date
+        import_event.gambling = gambling
+        import_event.result = numbers
+        import_event.save()
+
+        publish_event('IMPORTACION', "sorteo %s fecha %s desde ViviTuSuerte" % (gambling.display_name, a_date))
       else:
-        # busco los numeros
-        match = re.search(regex_number, l)
+        logger.info("Resultado NO encontrado")
 
-        if match and match.group(1):
-          i = numbers_found % 2
-          numbers_tmp[i].append(match.group(1))
-
-          numbers_found += 1
-
-          if numbers_found == 20:
-            numbers = numbers_tmp[0] + numbers_tmp[1]
-            break
-
-    if len(numbers) == 20:
-      if 'mont' in gambling.name:
-        numbers = map(lambda n: n[-3:], numbers)
-      else:
-        numbers = map(lambda n: n[-4:], numbers)
-
-      logger.info("Resultado encontrado: %s" % numbers)
-      import_event = ImportEvent()
-      import_event.source = self.name
-      import_event.url = 'Not available'
-      import_event.date = a_date
-      import_event.gambling = gambling
-      import_event.result = numbers
-      import_event.save()
-
-      publish_event('IMPORTACION', "sorteo %s fecha %s desde ViviTuSuerte" % (gambling.display_name, a_date))
-    else:
-      logger.info("Resultado NO encontrado")
+    except: 
+      logger.error("Unexpected error: %s" % sys.exc_info()[0])
 
