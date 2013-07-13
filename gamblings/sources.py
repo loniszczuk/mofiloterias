@@ -37,7 +37,7 @@ class NotitimbaSource:
     return notitimba_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    logger.info("*******************************************************" 
+    logger.info("*******************************************************") 
     logger.info("Descargando el sorteo %s de la fecha %s desde Notitimba" 
       %s (gambling.display_name.encode('utf-8'), a_date))
     
@@ -121,8 +121,8 @@ class LoteriasMundialesSource:
     return loteriasmundiales_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    logger.info("*******************************************************" 
-    print "Descargando el sorteo %s de la fecha %s desde LoteriasMundiales" % (gambling.display_name.encode('utf-8'), a_date))
+    logger.info("*******************************************************")
+    logger.info("Descargando el sorteo %s de la fecha %s desde LoteriasMundiales" % (gambling.display_name.encode('utf-8'), a_date))
     conf = loteriasmundiales_gambling_name_mapping[gambling.name]
 
     url = "http://www.loteriasmundiales.com.ar/index.asp"
@@ -219,7 +219,7 @@ class ViviTuSuerteSource:
     return vivitusuerte_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    logger.info("*******************************************************" 
+    logger.info("*******************************************************")
     logger.info("Descargando el sorteo %s de la fecha %s desde ViviTuSuerte" % (gambling.display_name.encode('utf-8'), a_date))
     
     conf = vivitusuerte_gambling_name_mapping[gambling.name]
@@ -273,7 +273,6 @@ class ViviTuSuerteSource:
       import_event.gambling = gambling
       import_event.result = numbers
       import_event.save()
-
 
       publish_event('IMPORTACION', "sorteo %s fecha %s desde ViviTuSuerte" % (gambling.display_name, a_date))
     else:
