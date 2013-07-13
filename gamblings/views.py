@@ -7,7 +7,7 @@ from datetime import datetime, date
 
 import urllib, re, json, subprocess, os, pika, logging
 
-logger = logging.getLogget("gamblings.views")
+logger = logging.getLogger("gamblings.views")
 
 def gambling_result(request):
 
@@ -77,6 +77,7 @@ def gambling_summaries(request):
 def gambling_import(request):
 
   if request.method == 'GET':
+    logger.info("")
     gamblings = Gambling.objects.values('name', 'display_name')
     today = date.today()
 
