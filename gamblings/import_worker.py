@@ -11,8 +11,8 @@ logger = logging.getLogger("gamblings.import_worker")
 
 sources = [
   NotitimbaSource(),
-  LoteriasMundialesSource(),
-  ViviTuSuerteSource()
+  ViviTuSuerteSource(),
+  LoteriasMundialesSource()
 ]
 
 def import_from_sources(gambling, a_date):
