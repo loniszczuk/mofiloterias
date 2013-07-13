@@ -164,24 +164,25 @@ LOGGING = {
     },
     'webapp': {
       'level': 'INFO',
-      'class': 'loggin.FileHandler',
-      'format': 'simple',
+      'class': 'logging.FileHandler',
       'filename': 'webapp.log'
     },
     'worker': {
       'level': 'INFO',
       'class': 'logging.FileHandler',
-      'format': 'simple',
       'filename': 'worker.log'
     }
   },
   'loggers': {
-    'django.request': {
-      'handlers': ['mail_admins'],
-      'level': 'ERROR',
-      'propagate': True,
-    },
     'pika.connection': {
+      'handlers' : ['worker'],
+      'level': 'INFO'
+    },
+    'gamblings.import_worker': {
+      'handlers' : ['worker'],
+      'level': 'INFO'
+    },
+    'gamblings.sources': {
       'handlers' : ['worker'],
       'level': 'INFO'
     }
