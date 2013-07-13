@@ -75,7 +75,7 @@ class NotitimbaSource:
       else:
         logger.info("Resultado NO encontrado")
     except: 
-      logger.error("Unexpected error: %s" % sys.exc_info()[0])
+      logger.error("Error en LoteriasMundiales: %s" % sys.exc_info()[0])
 
 
 
@@ -185,15 +185,13 @@ class LoteriasMundialesSource:
             import_event.save()
 
             publish_event('IMPORTACION', "sorteo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
-
           else:
             logger.info("Se encontro la tabla pero no los 20 numeros")
-
           return None
 
       logger.info("Resultado NO encontrado")
     except: 
-      logger.error("Unexpected error: %s" % sys.exc_info()[0])
+      logger.error("Error en LoteriasMundiales: %s" % sys.exc_info()[0])
 
 vivitusuerte_gambling_name_mapping = {
   'prim_prov': (24, 'Provincia - La Primera'),
@@ -284,5 +282,5 @@ class ViviTuSuerteSource:
         logger.info("Resultado NO encontrado")
 
     except: 
-      logger.error("Unexpected error: %s" % sys.exc_info()[0])
+      logger.error("Error en ViviTuSuerte: %s" % sys.exc_info()[0])
 
