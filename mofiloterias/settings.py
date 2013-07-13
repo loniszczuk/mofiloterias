@@ -147,21 +147,33 @@ INSTALLED_APPS = (
 LOGGING = {
   'version': 1,
   'disable_existing_loggers': False,
+  'formatters': {
+    'simple': {
+      'format': '%(levelname)s %(message)s'
+    },
+  },
   'filters': {
     'require_debug_false': {
       '()': 'django.utils.log.RequireDebugFalse'
     }
   },
   'handlers': {
-    'mail_admins': {
-      'level': 'ERROR',
-      'filters': ['require_debug_false'],
-      'class': 'django.utils.log.AdminEmailHandler'
-    },
-    'console':{
+    'console': {
       'level': 'INFO',
       'class': 'logging.StreamHandler'
     },
+    'webapp': {
+      'level': 'INFO',
+      'class': 'loggin.FileHandler',
+      'format': 'simple',
+      'filename': 'webapp.log'
+    },
+    'worker': {
+      'level': 'INFO',
+      'class': 'logging.FileHandler',
+      'format': 'simple',
+      'filename': 'worker.log'
+    }
   },
   'loggers': {
     'django.request': {
@@ -170,7 +182,7 @@ LOGGING = {
       'propagate': True,
     },
     'pika.connection': {
-      'handlers' : ['console'],
+      'handlers' : ['worker'],
       'level': 'INFO'
     }
   }

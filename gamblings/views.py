@@ -3,8 +3,11 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from gamblings.models import Gambling, GamblingConfiguration, GamblingResult, GamblingSummary
-import urllib, re, json, subprocess, os, pika
 from datetime import datetime, date
+
+import urllib, re, json, subprocess, os, pika, logging
+
+logger = logging.getLogget("gamblings.views")
 
 def gambling_result(request):
 
@@ -92,7 +95,7 @@ def gambling_import(request):
 
     for g in gamblings: 
       if 'True' == request.POST.get(g['name']):
-        print 'Manually importing gambling', g['name']
+        logger.info('Enviando mensaje para importar %s de la fecha %s' % (g['name'], a_date.isoformat()))
 
         message = json.dumps({'date': a_date.isoformat(), 'name': g['name'], 'retries': 0})
         channel.basic_publish(exchange='',

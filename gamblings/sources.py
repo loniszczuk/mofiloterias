@@ -3,7 +3,9 @@ from gamblings.models import ImportEvent
 from datetime import datetime, timedelta
 from mofiloterias import now, today, publish_event
 
-import urllib, re
+import urllib, re, logging
+
+logger = logging.getLogger("gamblings.sources")
 
 # para notitimba
 notitimba_gambling_name_mapping = {
@@ -35,10 +37,12 @@ class NotitimbaSource:
     return notitimba_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    print "Descargando el sorteo", gambling.display_name.encode('utf-8'), "de la fecha", a_date, "desde Notitimba"
+    logger.info("*******************************************************" 
+    logger.info("Descargando el sorteo %s de la fecha %s desde Notitimba" 
+      %s (gambling.display_name.encode('utf-8'), a_date))
     
     url = "http://www.notitimba.com/quiniela/premios.php?fch=%s&lot=%s" % (a_date, notitimba_gambling_name_mapping[gambling.name])
-    print "url:", url
+    logger.info("Url : %s" % url)
     
     f = urllib.urlopen(url)
     page = f.read()
@@ -56,7 +60,7 @@ class NotitimbaSource:
       for i in xrange(10):
         numbers.append(matches[i*2+1][1])
 
-      print "Resultado encontrado para",gambling.display_name.encode('utf-8'),"fecha", a_date, ":", numbers
+      logger.info("Resultado encontrado: %s" % numbers)
 
       import_event = ImportEvent()
       import_event.source = self.name
@@ -69,7 +73,7 @@ class NotitimbaSource:
       publish_event('IMPORTACION', "sorteo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
 
     else:
-      print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en Notitimba"
+      print "Resultado NO encontrado"
 
 
 
@@ -117,7 +121,8 @@ class LoteriasMundialesSource:
     return loteriasmundiales_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    print "Descargando el sorteo", gambling.display_name.encode('utf-8'), "de la fecha", a_date, "desde LoteriasMundiales"
+    logger.info("*******************************************************" 
+    print "Descargando el sorteo %s de la fecha %s desde LoteriasMundiales" % (gambling.display_name.encode('utf-8'), a_date))
     conf = loteriasmundiales_gambling_name_mapping[gambling.name]
 
     url = "http://www.loteriasmundiales.com.ar/index.asp"
@@ -141,7 +146,8 @@ class LoteriasMundialesSource:
 
 
     if not page_date or page_date.group(0).lower().find(expected_date) < 0:
-      print "No coinciden las fechas para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales."
+      logger.info("No coinciden las fechas. Fecha de la pagina: %s ; Fecha esperada: %s"
+       % (page_date, expected_date) )
       return None
 
     regex_table = r"<table width=\"180\".*?</table>"
@@ -167,7 +173,7 @@ class LoteriasMundialesSource:
           else:
             numbers = map(lambda n: n[-4:], numbers)
 
-          print "Resultado encontrado para",gambling.display_name.encode('utf-8'),"fecha", a_date, ":", numbers
+          logger.info("Resultado encontrado: %s" % numbers)
           import_event = ImportEvent()
           import_event.source = self.name
           import_event.url = 'Not available'
@@ -179,11 +185,11 @@ class LoteriasMundialesSource:
           publish_event('IMPORTACION', "sorteo %s fecha %s desde LoteriasMundiales" % (gambling.display_name, a_date))
 
         else:
-          print "Se encontro la tabla para", gambling.display_name.encode('utf-8'), "fecha", a_date, ", pero no los 20 numeros en LoteriasMundiales"
+          logger.info("Se encontro la tabla pero no los 20 numeros")
 
         return None
 
-    print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, "en LoteriasMundiales"
+    logger.info("Resultado NO encontrado")
 
 vivitusuerte_gambling_name_mapping = {
   'prim_prov': (24, 'Provincia - La Primera'),
@@ -213,7 +219,8 @@ class ViviTuSuerteSource:
     return vivitusuerte_gambling_name_mapping.get(gambling.name) != None
 
   def import_results(self, gambling, a_date):
-    print "Descargando el sorteo", gambling.display_name.encode('utf-8'), "de la fecha", a_date, "desde ViviTuSuerte"
+    logger.info("*******************************************************" 
+    logger.info("Descargando el sorteo %s de la fecha %s desde ViviTuSuerte" % (gambling.display_name.encode('utf-8'), a_date))
     
     conf = vivitusuerte_gambling_name_mapping[gambling.name]
 
@@ -258,7 +265,7 @@ class ViviTuSuerteSource:
       else:
         numbers = map(lambda n: n[-4:], numbers)
 
-      print "Resultado encontrado para",gambling.display_name.encode('utf-8'),"fecha", a_date, ":", numbers
+      logger.info("Resultado encontrado: %s" % numbers)
       import_event = ImportEvent()
       import_event.source = self.name
       import_event.url = 'Not available'
@@ -270,5 +277,5 @@ class ViviTuSuerteSource:
 
       publish_event('IMPORTACION', "sorteo %s fecha %s desde ViviTuSuerte" % (gambling.display_name, a_date))
     else:
-      print "No se encontraron resultados para", gambling.display_name.encode('utf-8'), "fecha", a_date, " en ViviTuSuerte"
+      logger.info("Resultado NO encontrado")
 
