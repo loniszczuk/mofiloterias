@@ -165,12 +165,12 @@ LOGGING = {
     'webapp': {
       'level': 'INFO',
       'class': 'logging.FileHandler',
-      'filename': 'webapp.log'
+      'filename': 'logs/webapp.log'
     },
     'worker': {
       'level': 'INFO',
       'class': 'logging.FileHandler',
-      'filename': 'worker.log'
+      'filename': 'logs/worker.log'
     }
   },
   'loggers': {
