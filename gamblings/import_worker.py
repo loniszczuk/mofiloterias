@@ -48,17 +48,18 @@ def verify_from_sources(gambling, a_date):
     numbers = [i.result_as_list() for i in imported]
 
     (verified, merged) = merge_results(numbers)
-    if merged:
-      gambling_result.result = merged
-      gambling_result.verified = verified
-      gambling_result.save()
 
-      if gambling_result.verified:
-        # anuncio que se verifico el resultado del sorteo
-        logger.info("Se verificaron los resultados del sorteo %s fecha %s" % (gambling.name, a_date))
-        publish_event('VERIFICACION', "Sorteo %s fecha %s" % (gambling.display_name, a_date))
+    gambling_result.result = merged
+    gambling_result.verified = verified
+    gambling_result.save()
+
+    if gambling_result.verified:
+      # anuncio que se verifico el resultado del sorteo
+      logger.info("Se verificaron los resultados del sorteo %s fecha %s" % (gambling.name, a_date))
+      publish_event('VERIFICACION', "Sorteo %s fecha %s" % (gambling.display_name, a_date))
 
 def merge_results(numbers):
+  logging.info("Mergeando resultados")
   if len(numbers) == 1:
     return (False, numbers[0])
   else:
