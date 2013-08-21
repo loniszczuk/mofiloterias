@@ -1,12 +1,10 @@
 #!/bin/bash
 
 LOG="logs/import-worker.log"
-ERRORLOG="logs/import-worker-errors.log"
 
 echo "######################## START WORKER "`date`" ##########################" >> $LOG
-echo "######################## START WORKER "`date`" ##########################" >> $ERRORLOG
 
 export DJANGO_SETTINGS_MODULE=mofiloterias.settings
 export PYTHONPATH=/home/leandro/mofiloterias:/home/leandro
 
-python gamblings/import_worker.py 2>> $ERRORLOG >> $LOG
+python gamblings/import_worker.py 2>> $LOG >> $LOG
