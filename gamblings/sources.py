@@ -47,7 +47,7 @@ class NotitimbaSource:
       f = urllib.urlopen(url)
       page = f.read()
 
-      if !page.startswith("|"):
+      if not page.startswith("|"):
         digits = min(4, int(page[0]))
         numbers = []
 
