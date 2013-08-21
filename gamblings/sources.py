@@ -10,22 +10,22 @@ logger = logging.getLogger("gamblings.sources")
 # para notitimba
 notitimba_gambling_name_mapping = {
   'prim_prov':0,
-  'prim_nac':1,
-  'prim_stafe':16,
-  'mat_prov':2,
-  'mat_nac':3,
+  'prim_nac':4,
+  'prim_stafe':10,
+  'mat_prov':1,
+  'mat_nac':5,
   'mat_mont':8,
-  'mat_stafe':14,
-  'vesp_prov':4,
-  'vesp_nac':5,
-  'vesp_stafe':15,
-  'noct_prov':6,
+  'mat_stafe':11,
+  'vesp_prov':2,
+  'vesp_nac':6,
+  'vesp_stafe':12,
+  'noct_prov':3,
   'noct_nac':7,
   'noct_mont':9,
   'noct_stafe':13,
-  'noct_cord':10,
-  'noct_sant':11,
-  'noct_mend':12,
+  'noct_cord':15,
+  'noct_sant':16,
+  'noct_mend':14,
 }
 
 class NotitimbaSource:
@@ -41,24 +41,19 @@ class NotitimbaSource:
       logger.info("*******************************************************") 
       logger.info("Descargando el sorteo %s de la fecha %s desde Notitimba" % (gambling.display_name, a_date))
     
-      url = "http://www.notitimba.com/quiniela/premios.php?fch=%s&lot=%s" % (a_date, notitimba_gambling_name_mapping[gambling.name])
+      url = "http://www.notitimba.com/loterias/premios.php?a=%s&b=%s" % (a_date, notitimba_gambling_name_mapping[gambling.name])
       logger.info("Url : %s" % url)
     
       f = urllib.urlopen(url)
       page = f.read()
 
-      if 'mont' in gambling.name:
-        regex = r"<td>(<font color=red><b>)?\s(\d{3})</td>"
-      else:
-        regex = r"<td>(<font color=red><b>)?(\d{4})</td>"
-
-      matches = re.findall(regex, page)
-      if len(matches) == 20:
+      if !page.startswith("|"):
+        digits = min(4, int(page[0]))
         numbers = []
-        for i in xrange(10):
-          numbers.append(matches[i*2][1])
-        for i in xrange(10):
-          numbers.append(matches[i*2+1][1])
+
+        for i in xrange(20):
+          idx = 1 + 6*i
+          numbers.append(page[idx+6-digits:idx+6])
 
         logger.info("Resultado encontrado: %s" % numbers)
 
