@@ -55,18 +55,20 @@ class NotitimbaSource:
           idx = 1 + 6*i
           numbers.append(page[idx+6-digits:idx+6])
 
-        logger.info("Resultado encontrado: %s" % numbers)
+        if all(number.isdigit() for number in numbers):
+          logger.info("Resultado encontrado: %s" % numbers)
 
-        import_event = ImportEvent()
-        import_event.source = self.name
-        import_event.url = url
-        import_event.date = a_date
-        import_event.gambling = gambling
-        import_event.result = numbers
-        import_event.save()
+          import_event = ImportEvent()
+          import_event.source = self.name
+          import_event.url = url
+          import_event.date = a_date
+          import_event.gambling = gambling
+          import_event.result = numbers
+          import_event.save()
 
-        publish_event('IMPORTACION', "sorteo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
-
+          publish_event('IMPORTACION', "sorteo %s fecha %s desde Notitimba" % (gambling.display_name, a_date))
+        else :
+          logger.info("Faltan resultados: %s" % numbers)
       else:
         logger.info("Resultado NO encontrado")
     except: 
