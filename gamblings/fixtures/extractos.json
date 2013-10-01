@@ -66,9 +66,9 @@
     "model": "gamblings.GamblingSummary",
     "pk": 8,
     "fields": {
-      "name": "nocturna_mendoza",
+      "name": "vespertina",
       "days_of_week": [5],
-      "gamblings": [17]
+      "gamblings": [7,8,9,17]
     }
   }
 ]

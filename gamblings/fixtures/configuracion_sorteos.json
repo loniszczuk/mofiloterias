@@ -198,6 +198,36 @@
       "time": "21:00:00",
       "finish_time": "21:30:00"
     }
+  },
+  {
+    "model": "gamblings.GamblingConfiguration",
+    "pk": 21,
+    "fields": {
+      "gambling": 7,
+      "days_of_week": [5],
+      "time": "18:30:00",
+      "finish_time": "19:00:00"
+    }
+  },
+  {
+    "model": "gamblings.GamblingConfiguration",
+    "pk": 22,
+    "fields": {
+      "gambling": 8,
+      "days_of_week": [5],
+      "time": "18:30:00",
+      "finish_time": "19:00:00"
+    }
+  },
+  {
+    "model": "gamblings.GamblingConfiguration",
+    "pk": 23,
+    "fields": {
+      "gambling": 9,
+      "days_of_week": [5],
+      "time": "18:30:00",
+      "finish_time": "19:00:00"
+    }
   }
 ]
 
